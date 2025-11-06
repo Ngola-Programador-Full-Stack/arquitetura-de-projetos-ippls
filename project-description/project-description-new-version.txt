@@ -1,0 +1,492 @@
+# PROJETO TECNOLÓGICO
+## ARQUITETURA DE PROJETOS IPPLS
+### Plataforma de Padronização e Gestão de Projetos Acadêmicos
+
+---
+
+## 1. IDENTIFICAÇÃO DO PROJETO
+
+**Título:** Arquitetura de Projetos IPPLS  
+**Subtítulo:** Plataforma de Padronização e Gestão de Projetos Acadêmicos  
+**Instituição:** Instituto Politécnico Privado Lucrêcio dos Santos  
+**Área:** Tecnologia da Informação / Engenharia de Software  
+**Tipo:** Projeto Tecnológico (PT)  
+**Nível:** Avançado  
+
+---
+
+## 2. RESUMO EXECUTIVO
+
+O projeto "Arquitetura de Projetos IPPLS" é uma plataforma web robusta desenvolvida para resolver problemas estruturais no desenvolvimento de projetos acadêmicos pelos estudantes do Instituto Politécnico Privado Lucrêcio dos Santos. A plataforma implementa templates padronizados baseados na arquitetura MVC (Model-View-Controller), oferecendo três níveis de complexidade (Base, Padrão e Avançado) para diferentes necessidades pedagógicas.
+
+**Palavras-chave:** Arquitetura de Software, MVC, Padronização, Gestão de Projetos, Plataforma Educacional
+
+---
+
+## 3. PROBLEMÁTICA
+
+### 3.1 Identificação do Problema
+
+Os estudantes do IPPLS enfrentam dificuldades significativas no desenvolvimento de projetos de programação web devido à:
+
+- **Falta de padronização:** Ausência de estruturas convencionais de diretórios
+- **Conhecimento limitado:** Desconhecimento sobre arquiteturas de software
+- **Estruturas inadequadas:** Projetos desenvolvidos de forma empírica e sem organização
+- **Baixa qualidade:** Projetos sem estética e funcionalidade adequadas
+
+### 3.2 Exemplo da Problemática Atual
+
+```
+PROJECTO TLP/
+├── index.php
+├── home.html
+├── login.html
+├── conn.php
+├── imagem-1.png
+├── pagina-de-cadastro.html
+└── etc.
+```
+
+Esta estrutura demonstra a desorganização típica encontrada nos projetos estudantis.
+
+### 3.3 Impacto do Problema
+
+- Redução da qualidade acadêmica
+- Dificuldade na avaliação pelos professores
+- Formação inadequada dos estudantes
+- Baixa produtividade no desenvolvimento
+
+---
+
+## 4. OBJETIVOS
+
+### 4.1 Objetivo Geral
+
+Desenvolver uma plataforma web que padronize e gerencie a criação de projetos acadêmicos no IPPLS, implementando estruturas baseadas na arquitetura MVC com diferentes níveis de complexidade.
+
+### 4.2 Objetivos Específicos
+
+1. **Padronização:** Implementar templates de projeto baseados em arquitetura MVC
+2. **Gestão:** Criar sistema de acompanhamento de progresso dos projetos
+3. **Usabilidade:** Desenvolver interface intuitiva para estudantes e coordenadores
+4. **Automação:** Automatizar a geração e distribuição de estruturas de projeto
+5. **Monitoramento:** Implementar sistema de notificações para avaliadores
+
+---
+
+## 5. JUSTIFICATIVA
+
+### 5.1 Relevância Acadêmica
+
+O projeto contribui diretamente para a melhoria da qualidade do ensino técnico no IPPLS, proporcionando aos estudantes ferramentas adequadas para o desenvolvimento de projetos estruturados.
+
+### 5.2 Relevância Técnica
+
+- Aplicação prática de conceitos de Engenharia de Software
+- Implementação de padrões de arquitetura reconhecidos
+- Desenvolvimento de sistema de gestão educacional
+
+### 5.3 Relevância Social
+
+- Melhoria da formação técnica dos estudantes
+- Preparação adequada para o mercado de trabalho
+- Elevação do padrão técnico institucional
+
+---
+
+## 6. FUNDAMENTAÇÃO TEÓRICA
+
+### 6.1 Arquitetura MVC (Model-View-Controller)
+
+A arquitetura MVC é um padrão de design que separa a aplicação em três componentes interconectados:
+
+- **Model (Modelo):** Gerencia os dados e a lógica de negócio
+- **View (Visão):** Responsável pela apresentação dos dados
+- **Controller (Controlador):** Intermediário entre Model e View
+
+### 6.2 Engenharia de Software
+
+Princípios fundamentais aplicados:
+- **Modularidade:** Separação em componentes independentes
+- **Reutilização:** Templates padronizados para diferentes projetos
+- **Manutenibilidade:** Estrutura organizada e documentada
+
+### 6.3 Gestão de Projetos Educacionais
+
+Metodologias aplicadas para acompanhamento e avaliação do progresso estudantil.
+
+---
+
+## 7. METODOLOGIA
+
+### 7.1 Abordagem de Desenvolvimento
+
+**Metodologia:** Desenvolvimento Ágil com Scrum  
+**Linguagens:** PHP, HTML5, CSS3, JavaScript  
+**Framework:** Laravel (PHP)  
+**Banco de Dados:** MySQL  
+**Servidor:** Apache/Nginx  
+
+
+## 7.2 🧰 Tecnologias Utilizadas
+
+- [Laravel 12](https://laravel.com/docs/12.x) (com Starter Kit Jetstream)
+- [Vue 3](https://vuejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Inertia.js](https://inertiajs.com/)
+- [Vite](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Swiper Lib](https://swiperjs.com/)
+- [shadcn/ui Lib](https://ui.shadcn.com/)
+- [Gsap Lib](https://gsap.com/docs/)
+- [MySQL](https://www.mysql.com/) (ou outro banco configurado no `.env`)
+
+### 7.3 Fases do Projeto
+
+1. **Análise e Levantamento de Requisitos** (2 semanas)
+2. **Design da Arquitetura** (1 semana)
+3. **Desenvolvimento do Core** (4 semanas)
+4. **Implementação dos Templates** (3 semanas)
+5. **Testes e Validação** (2 semanas)
+6. **Implantação e Treinamento** (1 semana)
+
+---
+
+## 8. ARQUITETURA DO SISTEMA
+
+### 8.1 Arquitetura Geral
+
+```
+┌─────────────────────┐
+│   Interface Web     │
+├─────────────────────┤
+│   Camada Controller │
+├─────────────────────┤
+│   Camada Model      │
+├─────────────────────┤
+│   Banco de Dados    │
+└─────────────────────┘
+```
+
+### 8.2 Estrutura de Diretórios do Sistema
+
+```
+ARQUITETURA_IPPLS/
+├── app/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Views/
+│   └── Config/
+├── public/
+│   ├── css/
+│   ├── js/
+│   └── assets/
+├── templates/
+│   ├── base/
+│   ├── padrao/
+│   └── avancado/
+├── database/
+│   ├── migrations/
+│   └── seeds/
+└── docs/
+```
+
+---
+
+## 9. FUNCIONALIDADES
+
+### 9.1 Módulo de Gestão de Usuários
+
+#### 9.1.1 Cadastro de Estudantes
+- Nome completo
+- Email pessoal
+- Número de telefone
+- Curso (padrão: Gestão de Redes e Sistemas Informáticos)
+- Turma
+
+#### 9.1.2 Gestão de Avaliadores
+- Cadastro de professores
+- Atribuição de projetos
+- Sistema de notificações
+
+#### 9.1.3 Painel do Coordenador
+- Visão geral da plataforma
+- Gestão de projetos
+- Relatórios e estatísticas
+
+### 9.2 Módulo de Projetos
+
+#### 9.2.1 Criação de Projetos
+- Título do projeto
+- Descrição detalhada
+- Anexos (imagens, documentos)
+- Categoria/Tipo
+
+#### 9.2.2 Templates de Arquitetura
+
+**Nível Base:**
+```
+projeto_base/
+├── index.php
+├── config/
+│   └── database.php
+├── models/
+├── views/
+├── controllers/
+├── assets/
+│   ├── css/
+│   ├── js/
+│   └── images/
+└── README.md
+```
+
+**Nível Padrão:**
+```
+projeto_padrao/
+├── index.php
+├── config/
+│   ├── database.php
+│   └── app.php
+├── app/
+│   ├── models/
+│   ├── views/
+│   ├── controllers/
+│   └── helpers/
+├── public/
+│   ├── css/
+│   ├── js/
+│   └── assets/
+├── storage/
+└── vendor/
+```
+
+**Nível Avançado:**
+```
+projeto_avancado/
+├── index.php
+├── config/
+├── app/
+│   ├── Core/
+│   ├── Models/
+│   ├── Views/
+│   ├── Controllers/
+│   ├── Middleware/
+│   └── Services/
+├── public/
+├── storage/
+├── tests/
+├── vendor/
+└── docker/
+```
+
+### 9.3 Módulo de Acompanhamento
+
+#### 9.3.1 Status do Projeto
+- Percentual de conclusão (10%, 25%, 50%, 75%, 100%)
+- Fases do desenvolvimento
+- Marcos importantes
+
+#### 9.3.2 Sistema de Notificações
+- Alertas para coordenadores
+- Notificações para avaliadores
+- Lembretes para estudantes
+
+---
+
+## 10. BANCO DE DADOS
+
+### 10.1 Modelo Conceitual
+
+#### Entidades Principais:
+- **Usuários** (estudantes, professores, coordenadores)
+- **Projetos** (templates disponíveis)
+- **Instâncias de Projeto** (projetos em desenvolvimento)
+- **Cursos e Turmas**
+- **Avaliações**
+
+### 10.2 Esquema de Dados
+
+```sql
+-- Tabela de Usuários
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    tipo ENUM('estudante', 'professor', 'coordenador'),
+    telefone_encarregado VARCHAR(20),
+    curso_id INT,
+    turma_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Projetos Template
+CREATE TABLE projetos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(150) NOT NULL,
+    descricao TEXT,
+    imagem VARCHAR(255),
+    categoria VARCHAR(50),
+    status ENUM('ativo', 'inativo') DEFAULT 'ativo',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Instâncias de Projeto
+CREATE TABLE instancias_projeto (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    projeto_id INT,
+    usuario_id INT,
+    nivel_arquitetura ENUM('base', 'padrao', 'avancado'),
+    percentual_conclusao INT DEFAULT 0,
+    status ENUM('iniciado', 'em_desenvolvimento', 'concluido'),
+    data_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_conclusao TIMESTAMP NULL,
+    FOREIGN KEY (projeto_id) REFERENCES projetos(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+```
+
+---
+
+## 11. INTERFACE DO USUÁRIO
+
+### 11.1 Design Responsivo
+
+A interface será desenvolvida com foco em:
+- **Responsividade:** Adaptação a diferentes dispositivos
+- **Usabilidade:** Interface intuitiva e fácil navegação
+- **Acessibilidade:** Conformidade com padrões WCAG
+
+### 11.2 Principais Telas
+
+#### 11.2.1 Dashboard do Estudante
+- Lista de projetos disponíveis
+- Status dos projetos em desenvolvimento
+- Opções de download
+
+#### 11.2.2 Painel do Coordenador
+- Gestão de projetos e usuários
+- Relatórios e estatísticas
+- Configurações do sistema
+
+#### 11.2.3 Área do Avaliador
+- Projetos atribuídos
+- Acompanhamento de progresso
+- Ferramentas de avaliação
+
+---
+
+## 12. CRONOGRAMA
+
+| Fase | Atividade | Duração | Responsável |
+|------|-----------|---------|-------------|
+| 1 | Análise de Requisitos | 2 semanas | Equipe Técnica |
+| 2 | Design da Arquitetura | 1 semana | Arquiteto de Software |
+| 3 | Desenvolvimento Backend | 3 semanas | Desenvolvedor Backend |
+| 4 | Desenvolvimento Frontend | 2 semanas | Desenvolvedor Frontend |
+| 5 | Implementação Templates | 2 semanas | Equipe Técnica |
+| 6 | Testes e Validação | 2 semanas | Equipe de QA |
+| 7 | Implantação | 1 semana | DevOps |
+| 8 | Treinamento | 1 semana | Equipe Técnica |
+
+**Total:** 14 semanas
+
+---
+
+## 13. RECURSOS NECESSÁRIOS
+
+### 13.1 Recursos Humanos
+
+- **1 Gerente de Projeto** (tempo integral)
+- **1 Arquiteto de Software** (meio período)
+- **2 Desenvolvedores Full-Stack** (tempo integral)
+- **1 Designer UX/UI** (meio período)
+- **1 Analista de QA** (meio período)
+
+### 13.2 Recursos Técnicos
+
+- **Servidor de Desenvolvimento:** 8GB RAM, 500GB SSD
+- **Servidor de Produção:** 16GB RAM, 1TB SSD
+- **Licenças de Software:** IDE, Ferramentas de Design
+- **Hospedagem:** SSL, Domínio, Backup
+
+### 13.3 Orçamento Estimado
+
+| Item | Valor (AOA) |
+|------|-------------|
+| Recursos Humanos | 2.500.000 |
+| Infraestrutura | 800.000 |
+| Licenças | 300.000 |
+| Outros | 200.000 |
+| **Total** | **3.800.000** |
+
+---
+
+## 14. RESULTADOS ESPERADOS
+
+### 14.1 Impacto Direto
+
+- **Padronização:** 100% dos projetos seguindo estrutura MVC
+- **Eficiência:** Redução de 60% no tempo de setup inicial
+- **Qualidade:** Melhoria de 80% na organização dos projetos
+
+### 14.2 Indicadores de Sucesso
+
+- Taxa de adoção da plataforma: > 90%
+- Satisfação dos usuários: > 85%
+- Redução de erros estruturais: > 70%
+- Melhoria nas avaliações: > 60%
+
+---
+
+## 15. CONSIDERAÇÕES FINAIS
+
+### 15.1 Benefícios do Projeto
+
+- **Para Estudantes:** Estrutura organizada e padronizada
+- **Para Professores:** Facilidade na avaliação e acompanhamento
+- **Para Instituição:** Elevação do padrão técnico e qualidade
+
+### 15.2 Sustentabilidade
+
+O projeto foi concebido para ser:
+- **Escalável:** Suporte a novos cursos e funcionalidades
+- **Manutenível:** Código limpo e documentado
+- **Extensível:** APIs para integrações futuras
+
+### 15.3 Próximos Passos
+
+1. Aprovação do projeto pela coordenação
+2. Formação da equipe técnica
+3. Início da fase de análise de requisitos
+4. Desenvolvimento do MVP (Minimum Viable Product)
+
+---
+
+## 16. REFERÊNCIAS
+
+1. **Gamma, E.** et al. *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley, 1994.
+
+2. **Fowler, M.** *Patterns of Enterprise Application Architecture*. Addison-Wesley, 2002.
+
+3. **Sommerville, I.** *Software Engineering*. 10th Edition. Pearson, 2015.
+
+4. **Pressman, R.** *Software Engineering: A Practitioner's Approach*. 8th Edition. McGraw-Hill, 2014.
+
+5. **Laravel Documentation.** Disponível em: https://laravel.com/docs
+
+---
+
+## ANEXOS
+
+### Anexo A: Diagramas de Caso de Uso
+### Anexo B: Mockups das Interfaces
+### Anexo C: Especificações Técnicas Detalhadas
+### Anexo D: Plano de Testes
+### Anexo E: Manual do Usuário (Draft)
+
+---
+
+**Documento elaborado em:** Julho de 2025  
+**Versão:** 1.0  
+**Status:** Em Análise
