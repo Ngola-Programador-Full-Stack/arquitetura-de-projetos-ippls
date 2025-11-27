@@ -48,9 +48,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 // Título personalizado baseado no tipo de usuário
 const dashboardTitle = computed(() => {
     const titles = {
-        coordenador: 'Dashboard - Coordenador',
-        professor: 'Dashboard - Professor', 
-        estudante: 'Dashboard - Estudante'
+        coordenador: 'Painel do - Coordenador',
+        professor: 'Painel do - Professor', 
+        estudante: 'Painel do - Estudante'
     };
     return titles[props.userType as keyof typeof titles] || 'Dashboard';
 });

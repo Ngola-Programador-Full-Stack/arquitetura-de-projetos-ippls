@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue';
+import Badge from './ui/badge/Badge.vue';
 
 defineOptions({
     inheritAttrs: false,
@@ -7,18 +8,112 @@ defineOptions({
 
 interface Props {
     className?: HTMLAttributes['class'];
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+    showText?: boolean;
+    variant?: 'default' | 'compact' | 'icon-only';
 }
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+    size: 'md',
+    showText: true,
+    variant: 'default'
+});
+
+// Tamanhos responsivos para cada variante
+const sizeClasses = {
+    xs: {
+        image: 'w-8 h-8',
+        text: 'text-xs',
+        subtitle: 'text-[0.6rem]',
+        badge: 'text-[0.55rem] px-1 py-0.5'
+    },
+    sm: {
+        image: 'w-10 h-10',
+        text: 'text-sm',
+        subtitle: 'text-[0.65rem]',
+        badge: 'text-[0.65rem] px-1 py-0.5'
+    },
+    md: {
+        image: 'w-12 h-12',
+        text: 'text-base',
+        subtitle: 'text-[0.7rem]',
+        badge: 'text-[0.75rem] px-1.5 py-0.5'
+    },
+    lg: {
+        image: 'w-16 h-16',
+        text: 'text-lg',
+        subtitle: 'text-sm',
+        badge: 'text-[0.85rem] px-2 py-1'
+    },
+    xl: {
+        image: 'w-20 h-20',
+        text: 'text-xl',
+        subtitle: 'text-base',
+        badge: 'text-base px-2 py-1'
+    }
+};
+
+const currentSize = sizeClasses[props.size];
 </script>
 
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 42" :class="className" v-bind="$attrs">
-        <path
-            fill="currentColor"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M17.2 5.633 8.6.855 0 5.633v26.51l16.2 9 16.2-9v-8.442l7.6-4.223V9.856l-8.6-4.777-8.6 4.777V18.3l-5.6 3.111V5.633ZM38 18.301l-5.6 3.11v-6.157l5.6-3.11V18.3Zm-1.06-7.856-5.54 3.078-5.54-3.079 5.54-3.078 5.54 3.079ZM24.8 18.3v-6.157l5.6 3.111v6.158L24.8 18.3Zm-1 1.732 5.54 3.078-13.14 7.302-5.54-3.078 13.14-7.3v-.002Zm-16.2 7.89 7.6 4.222V38.3L2 30.966V7.92l5.6 3.111v16.892ZM8.6 9.3 3.06 6.222 8.6 3.143l5.54 3.08L8.6 9.3Zm21.8 15.51-13.2 7.334V38.3l13.2-7.334v-6.156ZM9.6 11.034l5.6-3.11v14.6l-5.6 3.11v-14.6Z"
-        />
-    </svg>
+    <a 
+        href="/" 
+        :class="[
+            'inline-flex items-center group cursor-pointer transition-all duration-200 hover:opacity-90',
+            className
+        ]"
+        v-bind="$attrs"
+    >
+        <!-- Logo Image -->
+        <div class="relative flex-shrink-0">
+            <img 
+                src="/img/logo/ippls-logo-removebg-preview.png" 
+                alt="IPPLS Logo" 
+                :class="[
+                    'rounded-md object-cover transition-transform duration-200 group-hover:scale-105',
+                    currentSize.image
+                ]"
+            />
+        </div>
+
+        <!-- Text Content (Condicional) -->
+        <div 
+            v-if="showText && variant !== 'icon-only'" 
+            :class="[
+                'flex flex-col ml-2 sm:ml-3',
+                variant === 'compact' ? 'gap-0' : 'gap-0.5'
+            ]"
+        >
+            <!-- Título Principal -->
+            <span 
+                :class="[
+                    'font-bold text-[#1e3557] dark:text-[#e6edf3] leading-tight whitespace-nowrap',
+                    currentSize.text,
+                    variant === 'compact' ? 'hidden sm:inline-block' : ''
+                ]"
+            >
+                INSTITUTO TÉCNICO
+            </span>
+            
+               
+            <!-- Subtítulo -->
+            <span 
+                :class="[
+                    'font-bold text-[#2B4C7E] dark:text-[#6BA3D4] leading-tight whitespace-nowrap',
+                    currentSize.subtitle,
+                    variant === 'compact' ? 'hidden sm:inline-block' : ''
+                ]"
+            >
+                LUCRÊCIO DOS SANTOS
+            </span>
+        </div>
+
+        <!-- Versão Compacta para Mobile -->
+        <div 
+            v-if="showText && variant === 'compact'" 
+            :class="'flex sm:hidden items-center ml-2'"
+        >
+        </div>
+    </a>
 </template>

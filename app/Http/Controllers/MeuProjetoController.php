@@ -88,10 +88,10 @@ class MeuProjetoController extends Controller
                 'status' => 'concluido',
                 'data_conclusao' => now()
             ]);
-            
+
             // Notificar coordenadores sobre conclusão
             $this->notificarConclusaoProjeto($instancia);
-            
+
         } elseif ($novoProgresso > 0) {
             $instancia->update(['status' => 'em_desenvolvimento']);
         }
@@ -103,7 +103,7 @@ class MeuProjetoController extends Controller
         if ($request->marco_atingido) {
             $this->notificarMarcoAtingido($instancia, $request->marco_atingido);
         }
-        
+
         // ✅ NOTIFICAÇÕES AUTOMÁTICAS PARA PROGRESSO
         $this->enviarNotificacoesProgresso($instancia, $progressoAnterior, $novoProgresso);
 
@@ -116,7 +116,7 @@ class MeuProjetoController extends Controller
     private function verificarMarcos(InstanciaProjeto $instancia, int $progressoAnterior, int $novoProgresso): void
     {
         $marcos = [25, 50, 75, 100];
-        
+
         foreach ($marcos as $marco) {
             if ($progressoAnterior < $marco && $novoProgresso >= $marco) {
                 $this->notificarMarcoAtingido($instancia, "{$marco}% de conclusão");
@@ -131,7 +131,7 @@ class MeuProjetoController extends Controller
     private function notificarConclusaoProjeto(InstanciaProjeto $instancia): void
     {
         $coordenadores = \App\Models\User::where('tipo', 'coordenador')->get();
-        
+
         foreach ($coordenadores as $coordenador) {
             \App\Models\Notificacao::create([
                 'usuario_id' => $coordenador->id,
@@ -225,17 +225,17 @@ public function downloadTemplate($id)
 public function create(Projeto $projeto)
 {
     $user = Auth::user();
-    
+
     // Verificar se já está inscrito
     $jaInscrito = InstanciaProjeto::where('usuario_id', $user->id)
         ->where('projeto_id', $projeto->id)
         ->exists();
-        
+
     if ($jaInscrito) {
         return redirect()->route('meus-projetos.index')
             ->with('error', 'Você já possui uma instância deste projeto.');
     }
-    
+
     return Inertia::render('MeusProjetos/Create', [
         'projeto' => $projeto->load('criadoPor')
     ]);
@@ -247,23 +247,23 @@ public function create(Projeto $projeto)
 public function store(Request $request, Projeto $projeto)
 {
     $user = Auth::user();
-    
+
     // Verificar se já está inscrito
     $jaInscrito = InstanciaProjeto::where('usuario_id', $user->id)
         ->where('projeto_id', $projeto->id)
         ->exists();
-        
+
     if ($jaInscrito) {
         return redirect()->route('meus-projetos.index')
             ->with('error', 'Você já possui uma instância deste projeto.');
     }
-    
+
     $request->validate([
         'nivel_arquitetura' => 'required|in:base,padrao,avancado',
         'repositorio_url' => 'nullable|url',
         'observacoes' => 'nullable|string|max:1000'
     ]);
-    
+
     $instancia = InstanciaProjeto::create([
         'projeto_id' => $projeto->id,
         'usuario_id' => $user->id,
@@ -274,10 +274,10 @@ public function store(Request $request, Projeto $projeto)
         'percentual_conclusao' => 0,
         'data_inicio' => now()
     ]);
-    
+
     // ✅ NOTIFICAÇÕES AUTOMÁTICAS
     $this->enviarNotificacoesProjetoIniciado($instancia);
-    
+
     return redirect()->route('meus-projetos.show', $instancia)
         ->with('success', 'Projeto iniciado com sucesso!');
 }
@@ -289,7 +289,7 @@ private function enviarNotificacoesProjetoIniciado(InstanciaProjeto $instancia):
 {
     $estudante = $instancia->usuario;
     $projeto = $instancia->projeto;
-    
+
     // 1. Notificação para o estudante
     $this->notificacaoService->enviarNotificacao(
         $estudante,
@@ -298,7 +298,7 @@ private function enviarNotificacoesProjetoIniciado(InstanciaProjeto $instancia):
         'success',
         route('meus-projetos.show', $instancia->id)
     );
-    
+
     // 2. Notificação para coordenadores
     $coordenadores = User::where('tipo', 'coordenador')->get();
     foreach ($coordenadores as $coordenador) {
@@ -310,7 +310,7 @@ private function enviarNotificacoesProjetoIniciado(InstanciaProjeto $instancia):
             route('supervisao.index')
         );
     }
-    
+
     // 3. Notificação para professores da turma do estudante (se houver)
     if ($estudante->turma_id) {
         $professores = User::where('tipo', 'professor')
@@ -318,7 +318,7 @@ private function enviarNotificacoesProjetoIniciado(InstanciaProjeto $instancia):
                 $query->where('turma_id', $estudante->turma_id);
             })
             ->get();
-            
+
         foreach ($professores as $professor) {
             $this->notificacaoService->enviarNotificacao(
                 $professor,
@@ -338,10 +338,10 @@ private function enviarNotificacoesProgresso(InstanciaProjeto $instancia, int $p
 {
     $estudante = $instancia->usuario;
     $projeto = $instancia->projeto;
-    
+
     // Marcos importantes (25%, 50%, 75%, 100%)
     $marcos = [25, 50, 75, 100];
-    
+
     foreach ($marcos as $marco) {
         if ($progressoAnterior < $marco && $novoProgresso >= $marco) {
             // Notificação para o estudante
@@ -352,7 +352,7 @@ private function enviarNotificacoesProgresso(InstanciaProjeto $instancia, int $p
                 'success',
                 route('meus-projetos.show', $instancia->id)
             );
-            
+
             // Notificação para coordenadores
             $coordenadores = User::where('tipo', 'coordenador')->get();
             foreach ($coordenadores as $coordenador) {
@@ -364,7 +364,7 @@ private function enviarNotificacoesProgresso(InstanciaProjeto $instancia, int $p
                     route('supervisao.index')
                 );
             }
-            
+
             // Notificação para professores da turma
             if ($estudante->turma_id) {
                 $professores = User::where('tipo', 'professor')
@@ -372,7 +372,7 @@ private function enviarNotificacoesProgresso(InstanciaProjeto $instancia, int $p
                         $query->where('turma_id', $estudante->turma_id);
                     })
                     ->get();
-                    
+
                 foreach ($professores as $professor) {
                     $this->notificacaoService->enviarNotificacao(
                         $professor,

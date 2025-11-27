@@ -61,8 +61,24 @@ class NotificacaoService
         );
     }
 
+    // Implementar em NotificacaoService.php
     public function notificarPrazoEntrega(int $dias = 7): void
     {
-        // Implementar lógica para notificar sobre prazos
+        $instancias = InstanciaProjeto::where('status', '!=', 'concluido')
+            ->whereNotNull('data_entrega')
+            ->where('data_entrega', '<=', now()->addDays($dias))
+            ->with('usuario')
+            ->get();
+        
+        foreach ($instancias as $instancia) {
+            $diasRestantes = now()->diffInDays($instancia->data_entrega);
+            $this->enviarNotificacao(
+                $instancia->usuario,
+                'Prazo de Entrega Próximo',
+                "Seu projeto '{$instancia->projeto->titulo}' tem {$diasRestantes} dias para entrega.",
+                'aviso',
+                route('meus-projetos.show', $instancia->id)
+            );
+        }
     }
 }

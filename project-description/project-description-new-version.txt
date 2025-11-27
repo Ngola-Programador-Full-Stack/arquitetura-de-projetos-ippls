@@ -191,6 +191,15 @@ ARQUITETURA_IPPLS/
 └── docs/
 ```
 
+### 8.3 Camada de Apresentação (Frontend Vue 3)
+
+- **Navbar global (`resources/js/components/Navbar.vue`)** – navegação fixa compartilhada em todas as telas públicas.
+- **Footer reutilizável (`resources/js/components/AppFooter.vue`)** – adicionado para padronizar links institucionais, redes sociais e captura de newsletter.
+- **Landing page (`resources/js/pages/Welcome.vue`)** – apresenta o projeto e reaproveita o footer compartilhado.
+- **Template Base (`resources/js/pages/Templates/Base/Index.vue`)** – visão completa da estrutura MVC simplificada, com tabs interativas e exemplos de código.
+- **Template Padrão (`resources/js/pages/Templates/Padrao/index.vue`)** – descreve camadas de serviços, middlewares e integrações REST com conteúdo exclusivo.
+- **Template Avançado (`resources/js/pages/Templates/Avancado/Index.vue`)** – detalha arquitetura enterprise, módulos independentes e pipelines CI/CD.
+
 ---
 
 ## 9. FUNCIONALIDADES

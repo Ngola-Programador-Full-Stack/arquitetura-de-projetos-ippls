@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Home, FolderOpenDot, Users2Icon, FileText, Bell, Star,  GraduationCap, BarChart3  } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, Home, FolderOpenDot, Users2Icon, FileText, Bell, Star,  GraduationCap, BarChart3, Settings  } from 'lucide-vue-next';
 import { computed, ref, onMounted } from 'vue';
 import AppLogo from './AppLogo.vue';
 
@@ -65,6 +65,13 @@ const mainNavItems = computed((): NavItem[] => {
             title: 'Notificações',
             href: '/notificacoes',
             icon: Bell,
+            badge: notificacoesNaoLidas.value,
+            badgeVariant: notificacoesNaoLidas.value > 0 ? 'destructive' : 'secondary'
+        },
+        {
+            title: 'Configurações',
+            href: '/settings',
+            icon: Settings,
             badge: notificacoesNaoLidas.value,
             badgeVariant: notificacoesNaoLidas.value > 0 ? 'destructive' : 'secondary'
         }
@@ -150,7 +157,7 @@ const mainNavItems = computed((): NavItem[] => {
 const footerNavItems: NavItem[] = [
     {
         title: 'Repositório Github',
-        href: 'https://github.com/laravel/vue-starter-kit',
+        href: 'https://github.com/Ngola-develop/arquitetura-de-projetos-ippls',
         icon: Folder,
     },
     {
@@ -167,7 +174,7 @@ const footerNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="route('dashboard')">
+                        <Link :href="route('home')">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>

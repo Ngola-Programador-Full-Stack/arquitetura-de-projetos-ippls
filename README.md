@@ -128,6 +128,18 @@ arquitetura-de-projetos-ippls/
 └── public/                 # Arquivos públicos
 ```
 
+## 🧩 Componentes Compartilhados
+
+- `resources/js/components/Navbar.vue` – navegação utilizada em todas as páginas públicas
+- `resources/js/components/AppFooter.vue` – **novo footer reutilizável** com links institucionais, redes sociais e newsletter
+
+## 🧭 Páginas Públicas
+
+- `resources/js/pages/Welcome.vue` – landing page premium com hero animado, CTA e agora utilizando o `AppFooter`
+- `resources/js/pages/Templates/Base/Index.vue` – apresenta o template Base MVC com guia detalhado, exemplos de código e CTA
+- `resources/js/pages/Templates/Padrao/index.vue` – descreve o template Padrão com camadas de serviços, middlewares e documentação própria
+- `resources/js/pages/Templates/Avancado/Index.vue` – destaca o template Avançado enterprise, modularização e pipelines CI/CD
+
 ## 🎯 Funcionalidades Principais
 
 ### Módulo de Gestão de Usuários

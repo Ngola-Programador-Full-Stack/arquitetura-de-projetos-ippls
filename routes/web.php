@@ -4,10 +4,30 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProjetoController;
 use App\Http\Controllers\MeuProjetoController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
+
+// Sobre
+Route::get('/sobre', [HomeController::class, 'about'])->name('about');
+
+// Recursos
+Route::get('/recursos', [HomeController::class, 'feature'])->name('feature');
+
+// Arquitetura
+Route::get('/arquiteturas', [HomeController::class, 'architecture'])->name('architecture');
+
+
+// As páginas de cada template
+Route::get('/templates/base', [App\Http\Controllers\TemplateController::class, 'templateBase'])->name('templates.base');
+Route::get('/templates/padrao', [App\Http\Controllers\TemplateController::class, 'templatePadrao'])->name('templates.padrao');
+Route::get('/templates/avancado', [App\Http\Controllers\TemplateController::class, 'templateAvancado'])->name('templates.avancado');
+Route::get('/templates/base/download', [App\Http\Controllers\TemplateController::class, 'downloadTemplateBase'])->name('templates.base.download');
+Route::get('/templates/padrao/download', [App\Http\Controllers\TemplateController::class, 'downloadTemplatePadrao'])->name('templates.padrao.download');
+Route::get('/templates/avancado/download', [App\Http\Controllers\TemplateController::class, 'downloadTemplateAvancado'])->name('templates.avancado.download');
+
+
+
 
 Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 

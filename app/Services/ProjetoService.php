@@ -79,64 +79,118 @@ class ProjetoService
      */
     public function obterTemplate(string $nivel)
     {
-        $templateDb = TemplateArquitetura::where('nivel', $nivel)
-            ->where('ativo', true)
-            ->first();
+        $templateDb = $this->buscarTemplateAtivoPorNivel($nivel);
 
         if ($templateDb) {
             return $this->formatarTemplateDoBanco($templateDb);
         }
 
+        return $this->getTemplatePorNivel($nivel);
+    }
+
+    private function buscarTemplateAtivoPorNivel(string $nivel): ?TemplateArquitetura
+    {
+        return TemplateArquitetura::where('nivel', $nivel)
+            ->where('ativo', true)
+            ->first();
+    }
+
+    private function formatarTemplateDoBanco(TemplateArquitetura $template): array
+    {
+        $estruturaNormalizada = $this->normalizarEstruturaDiretoriosBanco($template->estrutura_diretorios ?? []);
+        $arquivosNormalizados = $this->normalizarArquivosBaseBanco($template->arquivos_base ?? []);
+
+        return [
+            'nome' => $template->nome,
+            'descricao' => $template->descricao,
+            'estrutura_diretorios' => $estruturaNormalizada,
+            'arquivos_base' => $arquivosNormalizados
+        ];
+    }
+
+    /*private function getTemplatePorNivel(string $nivel): array
+    {
         return match ($nivel) {
             'intermediario' => $this->getTemplateIntermediario(),
             'avancado' => $this->getTemplateAvancado(),
             default => $this->getTemplateBasico(),
         };
-    }
+    }*/
 
-    private function formatarTemplateDoBanco(TemplateArquitetura $template): array
+    /**
+     * Obtém template embutido baseado no nível
+     */
+    private function getTemplatePorNivel(string $nivel): array
     {
-        return [
-            'nome' => $template->nome,
-            'descricao' => $template->descricao,
-            'estrutura_diretorios' => $template->estrutura_diretorios, // Já é array devido ao cast
-            'arquivos_base' => $template->arquivos_base // Já é array devido ao cast
-        ];
+        return match ($nivel) {
+            'padrao' => $this->getTemplatePadrao(),
+            'avancado' => $this->getTemplateAvancado(),
+            default => $this->getTemplateBase(),
+        };
     }
 
+    /*public function gerarZipTemplate(InstanciaProjeto $instancia)
+    {
+        $templateDb = $this->buscarTemplateAtivoPorNivel($instancia->nivel_arquitetura);
+
+        if ($templateDb) {
+            return $this->gerarZipFromDatabaseTemplate($templateDb, $instancia);
+        }
+
+        $template = $this->getTemplatePorNivel($instancia->nivel_arquitetura);
+
+        return $this->gerarZipFromEmbeddedTemplate($instancia, $template);
+    }*/
+
+
+
+    /**
+     * ✅ CORRIGIDO: Gera ZIP para projetos instanciados (SEMPRE usa templates embutidos)
+     */
     public function gerarZipTemplate(InstanciaProjeto $instancia)
     {
-        $template = $this->obterTemplate($instancia->nivel_arquitetura);
-
-        if ($template instanceof TemplateArquitetura) {
-            return $this->gerarZipFromDatabaseTemplate($template, $instancia);
-        }
+        // ✅ SEMPRE usar templates embutidos para projetos instanciados
+        // Estes templates têm variáveis personalizadas do estudante
+        $template = $this->getTemplatePorNivel($instancia->nivel_arquitetura);
 
         return $this->gerarZipFromEmbeddedTemplate($instancia, $template);
     }
+
+
+
 
     /**
      * Gera ZIP a partir de template do banco de dados
      */
     private function gerarZipFromDatabaseTemplate(TemplateArquitetura $template, InstanciaProjeto $instancia)
     {
-        $zipFileName = "projeto_{$instancia->projeto->titulo}_{$instancia->nivel_arquitetura}.zip";
+        $zipFileName = "PROJETO__{$instancia->projeto->titulo}_{$instancia->nivel_arquitetura}__IPPLS.zip";
         $zipPath = storage_path("app/temp/{$zipFileName}");
 
         if (!file_exists(dirname($zipPath))) {
             mkdir(dirname($zipPath), 0755, true);
         }
 
+        $estruturaNormalizada = $this->normalizarEstruturaDiretoriosBanco($template->estrutura_diretorios ?? []);
+        $prefixoRaiz = $this->detectarPrefixoRaizEstrutura($estruturaNormalizada);
+        $arquivosNormalizados = $this->normalizarArquivosBaseBanco($template->arquivos_base ?? [], $prefixoRaiz);
+
         $zip = new ZipArchive();
         if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
-            if (!empty($template->estrutura_diretorios)) {
-                $this->adicionarEstruturaDiretorios($zip, $template->estrutura_diretorios); // Já é array
+            if (!empty($estruturaNormalizada)) {
+                $this->adicionarEstruturaDiretorios($zip, $estruturaNormalizada);
             }
-            
-            if (!empty($template->arquivos_base)) {
-                $this->adicionarArquivosBase($zip, $template->arquivos_base, $instancia); // Já é array
+
+            if (!empty($arquivosNormalizados)) {
+                $this->adicionarArquivosBase($zip, $arquivosNormalizados, $instancia);
             }
-            
+
+            $zip->close();
+        }
+
+        if ($zip->numFiles === 0) {
+            $zip->open($zipPath);
+            $zip->addFromString('README.md', "Template gerado automaticamente para {$instancia->projeto->titulo}");
             $zip->close();
         }
 
@@ -146,7 +200,7 @@ class ProjetoService
     /**
      * Gera ZIP a partir de template embutido
      */
-    private function gerarZipFromEmbeddedTemplate(InstanciaProjeto $instancia, array $template)
+    /*private function gerarZipFromEmbeddedTemplate(InstanciaProjeto $instancia, array $template)
     {
         $zipFileName = "template_{$instancia->projeto->titulo}_{$instancia->id}.zip";
         $tempFile = tempnam(sys_get_temp_dir(), 'template_');
@@ -175,7 +229,73 @@ class ProjetoService
         $zip->close();
 
         return response()->download($tempFile, $zipFileName)->deleteFileAfterSend(true);
+    }*/
+
+
+
+    /**
+     * Gera ZIP a partir de template embutido (com dados personalizados)
+     */
+    private function gerarZipFromEmbeddedTemplate(InstanciaProjeto $instancia, array $template)
+    {
+        $nomeProjeto = \Illuminate\Support\Str::slug($instancia->projeto->titulo, '_');
+        $nivel = $instancia->nivel_arquitetura;
+        $estudante = \Illuminate\Support\Str::slug($instancia->usuario->name, '_');
+
+        $zipFileName = "IPPLS_{$nomeProjeto}_{$nivel}_{$estudante}.zip";
+        $zipPath = storage_path("app/temp/{$zipFileName}");
+
+        // Garantir que o diretório existe
+        if (!file_exists(dirname($zipPath))) {
+            mkdir(dirname($zipPath), 0755, true);
+        }
+
+        $zip = new ZipArchive();
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            throw new Exception('Não foi possível criar o arquivo ZIP');
+        }
+
+        // Adiciona estrutura de diretórios
+        if (isset($template['estrutura_diretorios'])) {
+            $this->adicionarEstruturaDiretorios($zip, $template['estrutura_diretorios']);
+        }
+
+        // Adiciona arquivos base com dados personalizados
+        if (isset($template['arquivos_base'])) {
+            foreach ($template['arquivos_base'] as $arquivo) {
+                $caminho = $arquivo['caminho'] ?? '';
+                
+                // ✅ Verificar se é logo ou favicon (arquivos binários)
+                if (str_contains($caminho, 'ippls-logo-removebg-preview.png')) {
+                    $logoPath = public_path('img/logo/ippls-logo-removebg-preview.png');
+                    if (file_exists($logoPath)) {
+                        $zip->addFile($logoPath, $caminho);
+                    }
+                } elseif (str_contains($caminho, 'favicon.ico')) {
+                    $faviconPath = public_path('favicon.ico');
+                    if (file_exists($faviconPath)) {
+                        $zip->addFile($faviconPath, $caminho);
+                    }
+                } else {
+                    // Arquivo de texto (PHP, HTML, CSS, JS, etc.)
+                    $conteudo = $this->gerarConteudoArquivo($arquivo, $instancia);
+                    $zip->addFromString($caminho, $conteudo);
+                }
+            }
+        }
+
+        // Adiciona README personalizado
+        $readme = $this->gerarReadmePersonalizado($instancia, $template);
+        $zip->addFromString('README.md', $readme);
+
+        $zip->close();
+
+        return response()->download($zipPath, $zipFileName)->deleteFileAfterSend(true);
     }
+
+
+
+
 
     /**
      * Adiciona estrutura de diretórios ao ZIP
@@ -208,7 +328,7 @@ class ProjetoService
     /**
      * Gera conteúdo de arquivo com substituição de variáveis
      */
-    private function gerarConteudoArquivo(array $arquivo, InstanciaProjeto $instancia): string
+    /*private function gerarConteudoArquivo(array $arquivo, InstanciaProjeto $instancia): string
     {
         $template = $arquivo['template'] ?? '';
 
@@ -222,12 +342,41 @@ class ProjetoService
         ];
 
         return str_replace(array_keys($variaveis), array_values($variaveis), $template);
+    }*/
+
+
+
+    /**
+     * Gera conteúdo de arquivo com substituição de variáveis do estudante
+     */
+    private function gerarConteudoArquivo(array $arquivo, InstanciaProjeto $instancia): string
+    {
+        $template = $arquivo['template'] ?? '';
+
+        $variaveis = [
+            '{{PROJETO_TITULO}}' => $instancia->projeto->titulo,
+            '{{PROJETO_DESCRICAO}}' => $instancia->projeto->descricao,
+            '{{ESTUDANTE_NOME}}' => $instancia->usuario->name,
+            '{{ESTUDANTE_EMAIL}}' => $instancia->usuario->email,
+            '{{DATA_CRIACAO}}' => now()->format('d/m/Y H:i'),
+            '{{NIVEL_ARQUITETURA}}' => strtoupper($instancia->nivel_arquitetura),
+            '{{NUMERO_ESTUDANTE}}' => $instancia->usuario->numero_estudante ?? 'N/A',
+            '{{CURSO}}' => $instancia->usuario->curso->nome ?? 'N/A',
+            '{{TURMA}}' => $instancia->usuario->turma->nome ?? 'N/A',
+        ];
+
+        return str_replace(array_keys($variaveis), array_values($variaveis), $template);
     }
+
+
+
+
+
 
     /**
      * Gera conteúdo do README
      */
-    private function gerarReadme(InstanciaProjeto $instancia, array $template): string
+    /*private function gerarReadme(InstanciaProjeto $instancia, array $template): string
     {
         return "# {$instancia->projeto->titulo}
 
@@ -256,11 +405,180 @@ class ProjetoService
 
 ---
 Gerado automaticamente em " . now()->format('d/m/Y H:i:s');
+    }*/
+
+
+    /**
+     * Gera conteúdo do README personalizado
+     */
+    private function gerarReadmePersonalizado(InstanciaProjeto $instancia, array $template): string
+    {
+        $tecnologias = is_array($instancia->projeto->tecnologias)
+            ? implode(', ', $instancia->projeto->tecnologias)
+            : $instancia->projeto->tecnologias ?? 'N/A';
+
+        return "# {$instancia->projeto->titulo}
+
+## 📚 Instituição
+**Instituto Politécnico Privado Lucrêcio dos Santos (IPPLS)**
+
+## 👨‍🎓 Informações do Estudante
+- **Nome:** {$instancia->usuario->name}
+- **Email:** {$instancia->usuario->email}
+- **Nº Estudante:** " . ($instancia->usuario->numero_estudante ?? 'N/A') . "
+- **Curso:** " . ($instancia->usuario->curso->nome ?? 'N/A') . "
+- **Turma:** " . ($instancia->usuario->turma->nome ?? 'N/A') . "
+
+## 📝 Descrição do Projeto
+{$instancia->projeto->descricao}
+
+## 🏗️ Template: {$template['nome']}
+{$template['descricao']}
+
+## 🎯 Nível de Arquitetura
+**" . ucfirst($instancia->nivel_arquitetura) . "** - {$instancia->nivel_arquitetura}
+
+## 💻 Tecnologias
+{$tecnologias}
+
+## 📊 Progresso Atual
+{$instancia->percentual_conclusao}% concluído
+
+## 🔗 Repositório
+" . ($instancia->repositorio_url ?: 'Ainda não definido') . "
+
+## 📅 Datas
+- **Início:** " . $instancia->data_inicio->format('d/m/Y') . "
+- **Gerado em:** " . now()->format('d/m/Y H:i:s') . "
+
+## 📖 Instruções de Instalação
+1. Extraia este arquivo ZIP
+2. Navegue até o diretório do projeto
+3. Configure o ambiente conforme as instruções específicas do template
+4. Inicie o desenvolvimento!
+
+## 📌 Observações
+" . ($instancia->observacoes ?: 'Nenhuma observação adicional') . "
+
+---
+**Gerado automaticamente pela Plataforma IPPLS**
+Data: " . now()->format('d/m/Y H:i:s') . "
+";
+    }
+
+
+
+
+
+    /**
+     * Normaliza a estrutura de diretórios vinda do banco
+     */
+    private function normalizarEstruturaDiretoriosBanco(array $estruturaBruta, int $nivel = 0): array
+    {
+        $resultado = [];
+
+        foreach ($estruturaBruta as $chave => $valor) {
+            if (is_array($valor) && isset($valor['nome']) && isset($valor['tipo'])) {
+                $item = $valor;
+                if (!isset($item['nivel'])) {
+                    $item['nivel'] = $nivel;
+                }
+                if (isset($item['filhos']) && is_array($item['filhos'])) {
+                    $item['filhos'] = $this->normalizarEstruturaDiretoriosBanco($item['filhos'], $nivel + 1);
+                }
+                $resultado[] = $item;
+                continue;
+            }
+
+            if (is_string($chave)) {
+                $nome = trim($chave, '/');
+                $item = [
+                    'nome' => $nome,
+                    'tipo' => 'pasta',
+                    'nivel' => $nivel,
+                ];
+
+                if (is_array($valor)) {
+                    $item['filhos'] = $this->normalizarEstruturaDiretoriosBanco($valor, $nivel + 1);
+                }
+
+                $resultado[] = $item;
+                continue;
+            }
+
+            if (is_int($chave) && is_string($valor)) {
+                $nome = trim($valor, '/');
+                $isDiretorio = str_ends_with($valor, '/') && !str_contains($valor, '.');
+                $tipo = $isDiretorio ? 'pasta' : 'arquivo';
+
+                $item = [
+                    'nome' => $nome,
+                    'tipo' => $tipo,
+                    'nivel' => $nivel,
+                ];
+
+                $resultado[] = $item;
+            }
+        }
+
+        return $resultado;
     }
 
     /**
-     * Template Básico - Estrutura simples mas bem organizada
+     * Normaliza os arquivos base vindos do banco
      */
+    private function normalizarArquivosBaseBanco(array $arquivosBrutos, string $prefixo = ''): array
+    {
+        $resultado = [];
+        $prefixoNormalizado = $prefixo !== '' ? rtrim($prefixo, '/') . '/' : '';
+
+        foreach ($arquivosBrutos as $arquivo) {
+            $caminho = null;
+            $conteudo = '';
+
+            if (is_array($arquivo) && isset($arquivo['caminho'])) {
+                $caminho = $arquivo['caminho'];
+                $conteudo = $arquivo['template'] ?? $arquivo['conteudo'] ?? '';
+            } elseif (is_string($arquivo)) {
+                $caminho = $arquivo;
+            }
+
+            if ($caminho === null) {
+                continue;
+            }
+
+            $caminhoNormalizado = ltrim($caminho, '/');
+
+            if ($prefixoNormalizado !== '' && !str_starts_with($caminhoNormalizado, rtrim($prefixoNormalizado, '/'))) {
+                $caminhoNormalizado = $prefixoNormalizado . $caminhoNormalizado;
+            }
+
+            $resultado[] = [
+                'caminho' => $caminhoNormalizado,
+                'template' => $conteudo,
+            ];
+        }
+
+        return $resultado;
+    }
+
+    private function detectarPrefixoRaizEstrutura(array $estrutura): string
+    {
+        $raizes = array_filter($estrutura, function ($item) {
+            return ($item['tipo'] ?? '') === 'pasta' && (($item['nivel'] ?? 0) === 0);
+        });
+
+        if (count($raizes) === 1) {
+            $item = reset($raizes);
+            return rtrim($item['nome'], '/') . '/';
+        }
+
+        return '';
+    }
+
+    /*
+      Template Básico - Estrutura simples mas bem organizada
+
     private function getTemplateBasico(): array
     {
         return [
@@ -314,9 +632,9 @@ Gerado automaticamente em " . now()->format('d/m/Y H:i:s');
         ];
     }
 
-    /**
+    /
      * Template Intermediário - Estrutura modular com pré-processadores
-     */
+
     private function getTemplateIntermediario(): array
     {
         return [
@@ -387,9 +705,9 @@ Gerado automaticamente em " . now()->format('d/m/Y H:i:s');
         ];
     }
 
-    /**
+    /
      * Template Avançado - Arquitetura MVC completa
-     */
+
     private function getTemplateAvancado(): array
     {
         return [
@@ -475,7 +793,332 @@ Gerado automaticamente em " . now()->format('d/m/Y H:i:s');
                 ]
             ]
         ];
+    }*/
+
+
+
+
+    // ==========================================
+    // TEMPLATES EMBUTIDOS (Com dados personalizados)
+    // ==========================================
+
+    /**
+     * Template Base - Estrutura simples mas bem organizada
+     */
+    private function getTemplateBase(): array
+    {
+        return [
+            'nome' => 'Template Base Profissional',
+            'descricao' => 'Estrutura inicial bem organizada para projetos simples, seguindo boas práticas',
+            'estrutura_diretorios' => [
+                ['nome' => 'public', 'tipo' => 'pasta', 'filhos' => [
+                    ['nome' => 'assets', 'tipo' => 'pasta', 'filhos' => [
+                        ['nome' => 'css', 'tipo' => 'pasta'],
+                        ['nome' => 'js', 'tipo' => 'pasta'],
+                        ['nome' => 'images', 'tipo' => 'pasta']
+                    ]],
+                ]],
+                ['nome' => 'docs', 'tipo' => 'pasta'],
+                ['nome' => 'config', 'tipo' => 'pasta'],
+            ],
+            'arquivos_base' => [
+                [
+                    'caminho' => 'public/index.html',
+                    'template' => '<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PROJETO_TITULO}}</title>
+    <meta name="description" content="{{PROJETO_DESCRICAO}}">
+    <meta name="author" content="{{ESTUDANTE_NOME}}">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>{{PROJETO_TITULO}}</h1>
+            <p class="subtitle">{{PROJETO_DESCRICAO}}</p>
+            <p class="author">Desenvolvido por: {{ESTUDANTE_NOME}} - {{NUMERO_ESTUDANTE}}</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="container">
+            <h2>Bem-vindo ao projeto</h2>
+            <p>Template gerado em: {{DATA_CRIACAO}}</p>
+            <p>Arquitetura: {{NIVEL_ARQUITETURA}}</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; ' . date('Y') . ' {{PROJETO_TITULO}} - IPPLS</p>
+            <p>{{CURSO}} - {{TURMA}}</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>'
+                ],
+                [
+                    'caminho' => 'public/assets/css/style.css',
+                    'template' => '/**
+ * {{PROJETO_TITULO}}
+ * Desenvolvido por: {{ESTUDANTE_NOME}}
+ * Email: {{ESTUDANTE_EMAIL}}
+ * Data: {{DATA_CRIACAO}}
+ */
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --text-color: #333;
+    --light-color: #f9f9f9;
+    --dark-color: #222;
+    --spacing-unit: 1rem;
+    --max-width: 1200px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-color);
+}
+
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-unit);
+}
+
+.header {
+    background-color: var(--dark-color);
+    color: white;
+    padding: calc(var(--spacing-unit) * 2) 0;
+    margin-bottom: var(--spacing-unit);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+.author {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+
+.main-content {
+    min-height: 60vh;
+    padding: 2rem 0;
+}
+
+.footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: var(--spacing-unit) 0;
+    margin-top: var(--spacing-unit);
+    text-align: center;
+}
+
+.footer p {
+    margin: 0.25rem 0;
+}'
+                ],
+                [
+                    'caminho' => 'public/assets/js/app.js',
+                    'template' => '/**
+ * {{PROJETO_TITULO}}
+ *
+ * Desenvolvido por: {{ESTUDANTE_NOME}}
+ * Email: {{ESTUDANTE_EMAIL}}
+ * Nº Estudante: {{NUMERO_ESTUDANTE}}
+ * Curso: {{CURSO}}
+ * Turma: {{TURMA}}
+ *
+ * Data de criação: {{DATA_CRIACAO}}
+ * Arquitetura: {{NIVEL_ARQUITETURA}}
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("✅ Projeto iniciado: {{PROJETO_TITULO}}");
+    console.log("👨‍💻 Desenvolvedor: {{ESTUDANTE_NOME}}");
+    console.log("🏗️ Arquitetura: {{NIVEL_ARQUITETURA}}");
+
+    // Inicializar aplicação
+    const App = {
+        init() {
+            this.setupEvents();
+            this.displayInfo();
+        },
+
+        setupEvents() {
+            console.log("🔧 Eventos configurados");
+        },
+
+        displayInfo() {
+            console.log("📚 IPPLS - Instituto Politécnico Privado Lucrêcio dos Santos");
+        }
+    };
+
+    App.init();
+});'
+                ],
+                [
+                    'caminho' => 'config/config.php',
+                    'template' => '<?php
+/**
+ * {{PROJETO_TITULO}}
+ *
+ * Desenvolvido por: {{ESTUDANTE_NOME}}
+ * Email: {{ESTUDANTE_EMAIL}}
+ * Data: {{DATA_CRIACAO}}
+ */
+
+define("APP_NAME", "{{PROJETO_TITULO}}");
+define("APP_AUTHOR", "{{ESTUDANTE_NOME}}");
+define("APP_EMAIL", "{{ESTUDANTE_EMAIL}}");
+define("APP_VERSION", "1.0.0");
+
+// Configurações do banco de dados
+define("DB_HOST", "localhost");
+define("DB_NAME", "database_name");
+define("DB_USER", "root");
+define("DB_PASS", "");
+
+// URLs
+define("BASE_URL", "http://localhost/");
+
+// Timezone
+date_default_timezone_set("Africa/Luanda");
+'
+                ],
+                [
+                    'caminho' => '.gitignore',
+                    'template' => '# Diretórios de IDE
+.idea/
+.vscode/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs e temporários
+*.log
+*.tmp
+*.temp
+
+# Dependências
+node_modules/
+vendor/
+
+# Configurações sensíveis
+config/database.local.php
+.env'
+                ]
+            ]
+        ];
     }
+
+    /**
+     * Template Padrão - Estrutura modular
+     */
+    private function getTemplatePadrao(): array
+    {
+        return [
+            'nome' => 'Template Padrão Modular',
+            'descricao' => 'Estrutura modular com separação de responsabilidades',
+            'estrutura_diretorios' => [
+                ['nome' => 'src', 'tipo' => 'pasta', 'filhos' => [
+                    ['nome' => 'components', 'tipo' => 'pasta'],
+                    ['nome' => 'modules', 'tipo' => 'pasta'],
+                    ['nome' => 'styles', 'tipo' => 'pasta'],
+                    ['nome' => 'utils', 'tipo' => 'pasta'],
+                ]],
+                ['nome' => 'public', 'tipo' => 'pasta'],
+                ['nome' => 'config', 'tipo' => 'pasta'],
+                ['nome' => 'docs', 'tipo' => 'pasta'],
+            ],
+            'arquivos_base' => [
+                [
+                    'caminho' => 'package.json',
+                    'template' => '{
+  "name": "{{PROJETO_TITULO}}",
+  "version": "1.0.0",
+  "description": "{{PROJETO_DESCRICAO}}",
+  "author": "{{ESTUDANTE_NOME}} <{{ESTUDANTE_EMAIL}}>",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  }
+}'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Template Avançado - Arquitetura MVC completa
+     */
+    private function getTemplateAvancado(): array
+    {
+        return [
+            'nome' => 'Template Avançado MVC',
+            'descricao' => 'Arquitetura MVC completa enterprise',
+            'estrutura_diretorios' => [
+                ['nome' => 'app', 'tipo' => 'pasta', 'filhos' => [
+                    ['nome' => 'controllers', 'tipo' => 'pasta'],
+                    ['nome' => 'models', 'tipo' => 'pasta'],
+                    ['nome' => 'views', 'tipo' => 'pasta'],
+                    ['nome' => 'services', 'tipo' => 'pasta'],
+                ]],
+                ['nome' => 'public', 'tipo' => 'pasta'],
+                ['nome' => 'tests', 'tipo' => 'pasta'],
+                ['nome' => 'config', 'tipo' => 'pasta'],
+            ],
+            'arquivos_base' => [
+                [
+                    'caminho' => 'composer.json',
+                    'template' => '{
+  "name": "{{ESTUDANTE_NOME}}/{{PROJETO_TITULO}}",
+  "description": "{{PROJETO_DESCRICAO}}",
+  "type": "project",
+  "authors": [
+    {
+      "name": "{{ESTUDANTE_NOME}}",
+      "email": "{{ESTUDANTE_EMAIL}}"
+    }
+  ],
+  "require": {
+    "php": "^8.0"
+  }
+}'
+                ]
+            ]
+        ];
+    }
+
+
+
+
+
+
+
+
+
+
 
     // Métodos para conteúdo dos arquivos básicos
     private function getHtmlBasico(): string
@@ -569,23 +1212,23 @@ body {
  */
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Aplicação iniciada - Template Básico");
-    
+
     // Exemplo de módulo
     const App = {
         init() {
             this.setupEvents();
         },
-        
+
         setupEvents() {
             // Adicione listeners de eventos aqui
             console.log("Eventos configurados");
         }
     };
-    
+
     App.init();
 });';
     }
-    
+
 
 
     private function getReadmeBasico(): string
@@ -656,13 +1299,13 @@ document.addEventListener("DOMContentLoaded", () => {
         <body>
             <div id="app">
                 <header-component></header-component>
-                
+
                 <main class="main-content">
                     <div class="container">
                         <router-view></router-view>
                     </div>
                 </main>
-                
+
                 <footer-component></footer-component>
             </div>
 

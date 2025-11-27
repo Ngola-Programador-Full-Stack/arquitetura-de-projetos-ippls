@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-
 @import 'tw-animate-css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -8,63 +7,32 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-sans: Instrument Sans, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
 
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-
-    --color-card: var(--card);
-    --color-card-foreground: var(--card-foreground);
-
-    --color-popover: var(--popover);
-    --color-popover-foreground: var(--popover-foreground);
-
-    --color-primary: var(--primary);
-    --color-primary-foreground: var(--primary-foreground);
-
-    --color-secondary: var(--secondary);
-    --color-secondary-foreground: var(--secondary-foreground);
-
-    --color-muted: var(--muted);
-    --color-muted-foreground: var(--muted-foreground);
-
-    --color-accent: var(--accent);
-    --color-accent-foreground: var(--accent-foreground);
-
-    --color-destructive: var(--destructive);
-    --color-destructive-foreground: var(--destructive-foreground);
-
-    --color-border: var(--border);
-    --color-input: var(--input);
-    --color-ring: var(--ring);
-
-    --color-chart-1: var(--chart-1);
-    --color-chart-2: var(--chart-2);
-    --color-chart-3: var(--chart-3);
-    --color-chart-4: var(--chart-4);
-    --color-chart-5: var(--chart-5);
-
-    --color-sidebar: var(--sidebar-background);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-ring: var(--sidebar-ring);
+    /* IPPLS Brand Colors */
+    --color-ippls-blue-dark: #2B4C7E;
+    --color-ippls-blue-medium: #4A8FC4;
+    --color-ippls-blue-light: #6BA3D4;
+    --color-ippls-red: #C1272D;
+    --color-ippls-red-dark: #A01F24;
+    --color-ippls-red-light: #D64046;
+    --color-ippls-gold: #F4B41A;
+    --color-ippls-gold-dark: #D69E0E;
+    --color-ippls-gold-light: #F7C84B;
+    --color-ippls-gray-dark: #333333;
+    --color-ippls-gray-medium: #666666;
+    --color-ippls-gray-light: #F5F5F5;
+    --color-ippls-white: #FFFFFF;
 }
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
   looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
 */
 @layer base {
     *,
@@ -72,96 +40,516 @@
     ::before,
     ::backdrop,
     ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
+        border-color: #e5e7eb;
+    }
+    
+    .dark *,
+    .dark ::after,
+    .dark ::before,
+    .dark ::backdrop,
+    .dark ::file-selector-button {
+        border-color: #30363d;
     }
 }
 
 @layer utilities {
     body,
     html {
-        --font-sans:
-            'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+        --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        font-feature-settings: 'cv11', 'ss01';
+        font-optical-sizing: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 }
 
 :root {
+    /* GitHub-inspired color system */
+    --gh-canvas-default: #ffffff;
+    --gh-canvas-subtle: #f6f8fa;
+    --gh-border-default: #d0d7de;
+    --gh-border-muted: #d8dee4;
+    
     --background: hsl(0 0% 100%);
     --foreground: hsl(0 0% 3.9%);
-    --card: hsl(0 0% 100%);
-    --card-foreground: hsl(0 0% 3.9%);
-    --popover: hsl(0 0% 100%);
-    --popover-foreground: hsl(0 0% 3.9%);
-    --primary: hsl(0 0% 9%);
-    --primary-foreground: hsl(0 0% 98%);
-    --secondary: hsl(0 0% 92.1%);
-    --secondary-foreground: hsl(0 0% 9%);
-    --muted: hsl(0 0% 96.1%);
-    --muted-foreground: hsl(0 0% 45.1%);
-    --accent: hsl(0 0% 96.1%);
-    --accent-foreground: hsl(0 0% 9%);
-    --destructive: hsl(0 84.2% 60.2%);
-    --destructive-foreground: hsl(0 0% 98%);
-    --border: hsl(0 0% 92.8%);
-    --input: hsl(0 0% 89.8%);
-    --ring: hsl(0 0% 3.9%);
-    --chart-1: hsl(12 76% 61%);
-    --chart-2: hsl(173 58% 39%);
-    --chart-3: hsl(197 37% 24%);
-    --chart-4: hsl(43 74% 66%);
-    --chart-5: hsl(27 87% 67%);
-    --radius: 0.5rem;
-    --sidebar-background: hsl(0 0% 98%);
-    --sidebar-foreground: hsl(240 5.3% 26.1%);
-    --sidebar-primary: hsl(0 0% 10%);
-    --sidebar-primary-foreground: hsl(0 0% 98%);
-    --sidebar-accent: hsl(0 0% 94%);
-    --sidebar-accent-foreground: hsl(0 0% 30%);
-    --sidebar-border: hsl(0 0% 91%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
-    --sidebar: hsl(0 0% 98%);
+    --radius: 0.75rem;
+    
+    /* IPPLS Brand Colors */
+    --ippls-blue-dark: #2B4C7E;
+    --ippls-blue-medium: #4A8FC4;
+    --ippls-blue-light: #6BA3D4;
+    --ippls-red: #C1272D;
+    --ippls-red-dark: #A01F24;
+    --ippls-red-light: #D64046;
+    --ippls-gold: #F4B41A;
+    --ippls-gold-dark: #D69E0E;
+    --ippls-gold-light: #F7C84B;
+    --ippls-gray-dark: #333333;
+    --ippls-gray-medium: #666666;
+    --ippls-gray-light: #F5F5F5;
+    --ippls-white: #FFFFFF;
 }
 
 .dark {
+    /* GitHub dark color system */
+    --gh-canvas-default: #0d1117;
+    --gh-canvas-subtle: #161b22;
+    --gh-border-default: #30363d;
+    --gh-border-muted: #21262d;
+    
     --background: hsl(0 0% 3.9%);
     --foreground: hsl(0 0% 98%);
-    --card: hsl(0 0% 3.9%);
-    --card-foreground: hsl(0 0% 98%);
-    --popover: hsl(0 0% 3.9%);
-    --popover-foreground: 0 0% 98%;
-    --primary: hsl(0 0% 98%);
-    --primary-foreground: hsl(0 0% 9%);
-    --secondary: hsl(0 0% 14.9%);
-    --secondary-foreground: hsl(0 0% 98%);
-    --muted: hsl(0 0% 16.08%);
-    --muted-foreground: hsl(0 0% 63.9%);
-    --accent: hsl(0 0% 14.9%);
-    --accent-foreground: hsl(0 0% 98%);
-    --destructive: hsl(0 84% 60%);
-    --destructive-foreground: hsl(0 0% 98%);
-    --border: hsl(0 0% 14.9%);
-    --input: hsl(0 0% 14.9%);
-    --ring: hsl(0 0% 83.1%);
-    --chart-1: hsl(220 70% 50%);
-    --chart-2: hsl(160 60% 45%);
-    --chart-3: hsl(30 80% 55%);
-    --chart-4: hsl(280 65% 60%);
-    --chart-5: hsl(340 75% 55%);
-    --sidebar-background: hsl(0 0% 7%);
-    --sidebar-foreground: hsl(0 0% 95.9%);
-    --sidebar-primary: hsl(360, 100%, 100%);
-    --sidebar-primary-foreground: hsl(0 0% 100%);
-    --sidebar-accent: hsl(0 0% 15.9%);
-    --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-    --sidebar-border: hsl(0 0% 15.9%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
-    --sidebar: hsl(240 5.9% 10%);
+    
+    /* IPPLS Brand Colors - Dark Mode Adjusted */
+    --ippls-blue-dark: #6BA3D4;
+    --ippls-blue-medium: #4A8FC4;
+    --ippls-blue-light: #8BB8E0;
+    --ippls-red: #E74F57;
+    --ippls-red-dark: #C1272D;
+    --ippls-red-light: #F06B73;
+    --ippls-gold: #F7C84B;
+    --ippls-gold-dark: #F4B41A;
+    --ippls-gold-light: #F9D97A;
+    --ippls-gray-dark: #E5E5E5;
+    --ippls-gray-medium: #A0A0A0;
+    --ippls-gray-light: #242424;
+    --ippls-white: #1A1A1A;
 }
 
 @layer base {
     * {
-        @apply border-border outline-ring/50;
+        @apply border-[#d0d7de] dark:border-[#30363d];
     }
+    
     body {
-        @apply bg-background text-foreground;
+        @apply bg-white dark:bg-[#0d1117] text-[#24292f] dark:text-[#c9d1d9];
     }
+    
+    /* GitHub-inspired typography */
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-bold;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+    
+    /* Smooth transitions */
+    * {
+        transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+    }
+}
+
+/* Custom Scrollbar - GitHub Style */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.dark * {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Selection colors */
+::selection {
+    background-color: rgba(43, 76, 126, 0.2);
+    color: inherit;
+}
+
+.dark ::selection {
+    background-color: rgba(107, 163, 212, 0.3);
+}
+
+/* Focus visible styles */
+:focus-visible {
+    outline: 2px solid var(--ippls-blue-medium);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-right {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* Utility classes */
+.animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+    animation: slide-in-right 0.5s ease-out;
+}
+
+.animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+}
+
+/* Backdrop blur support */
+@supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
+    .backdrop-blur-xl {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+    
+    .backdrop-blur-2xl {
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
+    }
+}
+
+/* Shadow utilities */
+.shadow-glow-blue {
+    box-shadow: 0 0 20px rgba(43, 76, 126, 0.3);
+}
+
+.dark .shadow-glow-blue {
+    box-shadow: 0 0 20px rgba(107, 163, 212, 0.2);
+}
+
+.shadow-glow-gold {
+    box-shadow: 0 0 20px rgba(244, 180, 26, 0.3);
+}
+
+.dark .shadow-glow-gold {
+    box-shadow: 0 0 20px rgba(247, 200, 75, 0.2);
+}
+
+/* Gradient text animation */
+.animate-gradient {
+    background-size: 200% auto;
+    animation: gradient 3s linear infinite;
+}
+
+@keyframes gradient {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Premium button styles */
+.btn-premium {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-premium:hover::before {
+    left: 100%;
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.dark .card-hover:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass morphism effect */
+.glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass {
+    background: rgba(13, 17, 23, 0.8);
+    border: 1px solid rgba(48, 54, 61, 0.5);
+}
+
+/* Loading spinner */
+.spinner {
+    border: 3px solid rgba(43, 76, 126, 0.1);
+    border-top-color: var(--ippls-blue-medium);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive font sizes */
+@media (max-width: 640px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1536px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    nav, footer {
+        display: none !important;
+    }
+}
+
+/* GitHub-inspired hover effects */
+.hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dark .hover-lift:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Smooth transitions for interactive elements */
+button, a, input, textarea, select {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus styles */
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--ippls-blue-medium);
+}
+
+.dark input:focus, .dark textarea:focus, .dark select:focus {
+    box-shadow: 0 0 0 2px var(--ippls-blue-light);
+}
+
+/* Subtle animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-ippls {
+    background: linear-gradient(135deg, var(--ippls-blue-dark) 0%, var(--ippls-red) 50%, var(--ippls-gold) 100%);
+}
+
+/* Text gradient */
+.text-gradient-ippls {
+    background: linear-gradient(135deg, var(--ippls-blue-dark), var(--ippls-red), var(--ippls-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Improved card styles */
+.card-modern {
+    background: white;
+    border: 1px solid var(--gh-border-default);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.dark .card-modern {
+    background: var(--gh-canvas-default);
+    border-color: var(--gh-border-default);
+}
+
+.card-modern:hover {
+    border-color: var(--ippls-blue-medium);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dark .card-modern:hover {
+    border-color: var(--ippls-blue-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Improved button styles */
+.btn-primary {
+    background: var(--ippls-blue-dark);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: var(--ippls-blue-medium);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dark .btn-primary {
+    background: #1f6feb;
+}
+
+.dark .btn-primary:hover {
+    background: #1a5cd7;
+}
+
+/* Loading states */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Improved form inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    background: var(--gh-canvas-subtle);
+    border: 1px solid var(--gh-border-default);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    border-color: var(--ippls-blue-medium);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(43, 76, 126, 0.1);
+}
+
+.dark input[type="text"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="password"]:focus,
+.dark textarea:focus {
+    border-color: var(--ippls-blue-light);
+    box-shadow: 0 0 0 3px rgba(107, 163, 212, 0.2);
+}
+
+.dark section {
+    background-image: none !important;
 }

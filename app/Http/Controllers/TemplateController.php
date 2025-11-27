@@ -96,4 +96,53 @@ class TemplateController extends Controller
             'arquivos' => $template->arquivos_base
         ]);
     }
+
+    public function templateBase()
+    {
+        return Inertia::render('Templates/Base/Index');
+    }
+
+    public function templatePadrao()
+    {
+        return Inertia::render('Templates/Padrao/Index');
+    }
+
+    public function templateAvancado()
+    {
+        return Inertia::render('Templates/Avancado/Index');
+    }
+
+
+    public function downloadTemplateBase()
+    {
+        $template = TemplateArquitetura::where('nivel', 'base')->first();
+
+        if (!$template) {
+            return back()->with('error', 'Template Base não encontrado.');
+        }
+
+        return $this->templateService->gerarZipTemplate($template);
+    }
+
+    public function downloadTemplatePadrao()
+    {
+        $template = TemplateArquitetura::where('nivel', 'padrao')->first();
+
+        if (!$template) {
+            return back()->with('error', 'Template Padrão não encontrado.');
+        }
+
+        return $this->templateService->gerarZipTemplate($template);
+    }
+
+    public function downloadTemplateAvancado()
+    {
+        $template = TemplateArquitetura::where('nivel', 'avancado')->first();
+
+        if (!$template) {
+            return back()->with('error', 'Template Avançado não encontrado.');
+        }
+
+        return $this->templateService->gerarZipTemplate($template);
+    }
 }

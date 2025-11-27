@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            // Templates devem ser criados primeiro (fazem truncate automaticamente)
+            TemplateArquiteturaSeeder::class,
+            // Depois criamos os dados de exemplo (usuários, projetos, etc.)
             DadosExemploSeeder::class,
         ]);
     }
