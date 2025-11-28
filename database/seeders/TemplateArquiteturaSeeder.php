@@ -363,15 +363,15 @@ switch ($action) {
     case 'create':
         $controller->create();
         break;
-    
+
     case 'update':
         $controller->update();
         break;
-    
+
     case 'delete':
         $controller->delete();
         break;
-    
+
     case 'index':
     default:
         $controller->index();
@@ -465,12 +465,12 @@ class User {
     public function emailExists($email, $excludeId = null) {
         $sql = "SELECT COUNT(*) FROM users WHERE email = ?";
         $params = [$email];
-        
+
         if ($excludeId) {
             $sql .= " AND id != ?";
             $params[] = $excludeId;
         }
-        
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchColumn() > 0;
@@ -564,7 +564,7 @@ class HomeController {
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = intval($_POST['id'] ?? 0);
-            
+
             if ($id > 0) {
                 if ($this->userModel->delete($id)) {
                     $this->setMessage('Usuário deletado com sucesso!', 'success');
@@ -641,10 +641,10 @@ PHP;
                         Template <span class="hero-title-highlight">MVC BASE</span>
                     </h1>
                     <p class="hero-subtitle">
-                        Arquitetura base para desenvolvimento g. Construa projetos sem concessões.
+                        Arquitetura base para desenvolvimento rápido. Construa projetos sem concessões.
                     </p>
                     <div class="hero-buttons">
-                        <a href="?page=home" class="btn-hero btn-hero-primary">Começar Agora</a>
+                        <a href="#home" class="btn-hero btn-hero-primary">Começar Agora</a>
                         <a href="README.md" class="btn-hero btn-hero-secondary">Documentação</a>
                     </div>
                 </div>
@@ -676,13 +676,17 @@ PHP;
             <?php $controller->clearMessage(); // Limpa APÓS exibir ?>
         <?php endif; ?>
 
+        <h1 class="hero-title">
+            CRUD - <span class="hero-title-highlight">CREATE</span> READ <span class="hero-title-highlight">UPDATE</span> DELETE
+        </h1><br>
+
         <!-- Create/Edit User Card -->
         <div class="card" id="form">
             <div class="card-header">
                 <h2><?= isset($_GET['edit']) ? '✏️ Editar Usuário' : '➕ Criar Usuário' ?></h2>
             </div>
             <div class="card-body">
-                <?php 
+                <?php
                 $editUser = null;
                 if (isset($_GET['edit']) && isset($controller)) {
                     $editUser = $controller->getUserById(intval($_GET['edit']));
@@ -692,16 +696,16 @@ PHP;
                     <?php if ($editUser): ?>
                         <input type="hidden" name="id" value="<?= $editUser['id'] ?>">
                     <?php endif; ?>
-                    
+
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label" for="name">Nome Completo *</label>
-                            <input 
-                                type="text" 
-                                id="name" 
-                                name="name" 
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
                                 class="form-input"
-                                value="<?= htmlspecialchars($editUser['name'] ?? '') ?>" 
+                                value="<?= htmlspecialchars($editUser['name'] ?? '') ?>"
                                 placeholder="Digite o nome"
                                 required
                             >
@@ -709,12 +713,12 @@ PHP;
 
                         <div class="form-group">
                             <label class="form-label" for="email">Email *</label>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
                                 class="form-input"
-                                value="<?= htmlspecialchars($editUser['email'] ?? '') ?>" 
+                                value="<?= htmlspecialchars($editUser['email'] ?? '') ?>"
                                 placeholder="exemplo@ippls.edu.ao"
                                 required
                             >
@@ -763,7 +767,7 @@ PHP;
                                                 <a href="?edit=<?= $user['id'] ?>" class="btn btn-sm btn-edit">
                                                     EDITAR
                                                 </a>
-                                                <form method="POST" action="?action=delete" class="inline-form" 
+                                                <form method="POST" action="?action=delete" class="inline-form"
                                                       onsubmit="return confirm('Confirma a exclusão?');">
                                                     <input type="hidden" name="id" value="<?= $user['id'] ?>">
                                                     <button type="submit" class="btn btn-sm btn-delete">
@@ -833,16 +837,16 @@ PHP;
                 <img src="assets/images/logo/ippls-logo-removebg-preview.png" alt="IPPLS" class="footer-logo">
                 <p class="footer-desc">Arquitetura base para desenvolver seus projetos.</p>
             </div>
-            
+
             <div class="footer-section">
                 <h3 class="footer-heading">Links Rápidos</h3>
                 <ul class="footer-links">
-                    <li><a href="#form">Começar</a></li>
+                    <li><a href="#home">Começar</a></li>
                     <li><a href="README.md">Documentação</a></li>
                     <li><a href="?">Usuários</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h3 class="footer-heading">Tecnologias</h3>
                 <ul class="footer-links">
@@ -852,7 +856,7 @@ PHP;
                 </ul>
             </div>
         </div>
-        
+
         <div class="footer-bottom">
             <p>Desenvolvido com ❤️ para o <strong>IPPLS</strong></p>
             <p class="footer-version">Template Base MVC • v1.0.0 • 2025</p>
@@ -889,7 +893,7 @@ HTML;
     --ippls-red: #C1272D;
     --ippls-gold: #F4B41A;
     --ippls-gold-dark: #D69E0E;
-    
+
     /* Escala de Cinzas */
     --gray-900: #0c2248;
     --gray-800: #1a2f52;
@@ -903,7 +907,7 @@ body {
     background: linear-gradient(135deg, #e8eef5 0%, #d4dce8 100%);
     min-height: 100vh;
     padding: 0;
-    color: #1a1a1a;
+    color: #07183b;
     line-height: 1.6;
 }
 
@@ -1097,7 +1101,7 @@ body {
 
 .btn-hero-primary {
     background: var(--ippls-gold);
-    color: black;
+    color: #07183b;
 }
 
 .btn-hero-primary:hover {
@@ -1114,7 +1118,7 @@ body {
 
 .btn-hero-secondary:hover {
     background: var(--ippls-gold);
-    color: black;
+    color: #07183b;
 }
 
 /* Visual Hero (Direita) */
@@ -1229,7 +1233,12 @@ body {
     }
 }
 
-
+@media (min-width: 1024px) {
+    .decoration-block-bottom {
+        width: 12rem;
+        height: 12rem;
+    }
+}
 
 @media (min-width: 1280px) {
     .decoration-block-bottom {
@@ -1536,7 +1545,7 @@ body {
 
 .btn-primary {
     background: var(--ippls-gold);
-    color: black;
+    color: #07183b;
     border-bottom: 3px solid var(--ippls-gold-dark);
 }
 
@@ -1565,7 +1574,7 @@ body {
 
 .btn-edit {
     background: var(--ippls-gold);
-    color: black;
+    color: #07183b;
     border: none;
 }
 
@@ -2299,7 +2308,7 @@ class ProductController {
     }
 
     // ✅ SISTEMA DE MENSAGENS FLASH COM SESSÕES
-    
+
     private function setMessage($message, $type) {
         $_SESSION['flash_message'] = $message;
         $_SESSION['flash_type'] = $type;
@@ -2346,8 +2355,8 @@ Crie um arquivo em `views/pages/` (ex: `products.php`):
     <!-- ✅ Header Específico de Produtos (Versão Simplificada) -->
     <header class="page-header">
         <div class="page-header-content">
-            <img src="assets/images/logo/ippls-logo-removebg-preview.png" 
-                 alt="IPPLS" 
+            <img src="assets/images/logo/ippls-logo-removebg-preview.png"
+                 alt="IPPLS"
                  class="page-header-logo">
             <div class="page-header-text">
                 <h1>Gestão de Produtos</h1>
@@ -2373,7 +2382,7 @@ Crie um arquivo em `views/pages/` (ex: `products.php`):
                 <h2><?= isset($_GET['edit']) ? '✏️ Editar Produto' : '➕ Criar Produto' ?></h2>
             </div>
             <div class="card-body">
-                <?php 
+                <?php
                 $editProduct = null;
                 if (isset($_GET['edit']) && isset($controller)) {
                     $editProduct = $controller->getProductById(intval($_GET['edit']));
@@ -2383,11 +2392,11 @@ Crie um arquivo em `views/pages/` (ex: `products.php`):
                     <?php if ($editProduct): ?>
                         <input type="hidden" name="id" value="<?= $editProduct['id'] ?>">
                     <?php endif; ?>
-                    
+
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label" for="name">Nome *</label>
-                            <input type="text" id="name" name="name" 
+                            <input type="text" id="name" name="name"
                                    class="form-input"
                                    value="<?= htmlspecialchars($editProduct['name'] ?? '') ?>"
                                    placeholder="Digite o nome do produto"
@@ -2395,14 +2404,14 @@ Crie um arquivo em `views/pages/` (ex: `products.php`):
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="price">Preço *</label>
-                            <input type="number" id="price" name="price" 
-                                   class="form-input" 
+                            <input type="number" id="price" name="price"
+                                   class="form-input"
                                    value="<?= $editProduct['price'] ?? '' ?>"
                                    placeholder="0.00"
                                    step="0.01" required>
                         </div>
                     </div>
-                    
+
                     <div class="button-group">
                         <button type="submit" class="btn btn-primary">
                             <?= $editProduct ? 'ATUALIZAR' : 'CRIAR' ?>
@@ -2440,10 +2449,10 @@ Crie um arquivo em `views/pages/` (ex: `products.php`):
                                         <td><?= number_format($product['price'], 2, ',', '.') ?> Kz</td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="?page=products&edit=<?= $product['id'] ?>#form" 
+                                                <a href="?page=products&edit=<?= $product['id'] ?>#form"
                                                    class="btn btn-sm btn-edit">EDITAR</a>
-                                                <form method="POST" 
-                                                      action="?page=products&action=delete" 
+                                                <form method="POST"
+                                                      action="?page=products&action=delete"
                                                       class="inline-form"
                                                       onsubmit="return confirm('Confirma a exclusão de <?= htmlspecialchars($product['name']) ?>?');">
                                                     <input type="hidden" name="id" value="<?= $product['id'] ?>">
@@ -2476,7 +2485,7 @@ Crie um arquivo em `views/pages/` (ex: `products.php`):
                 <img src="assets/images/logo/ippls-logo-removebg-preview.png" alt="IPPLS" class="footer-logo">
                 <p class="footer-desc">Arquitetura base para desenvolver seus projetos.</p>
             </div>
-            
+
             <div class="footer-section">
                 <h3 class="footer-heading">Links Rápidos</h3>
                 <ul class="footer-links">
@@ -2485,7 +2494,7 @@ Crie um arquivo em `views/pages/` (ex: `products.php`):
                     <li><a href="?">Usuários</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h3 class="footer-heading">Tecnologias</h3>
                 <ul class="footer-links">
@@ -2495,7 +2504,7 @@ Crie um arquivo em `views/pages/` (ex: `products.php`):
                 </ul>
             </div>
         </div>
-        
+
         <div class="footer-bottom">
             <p>Desenvolvido com ❤️ para o <strong>IPPLS</strong></p>
             <p class="footer-version">Template Base MVC • v1.0.0 • 2025</p>
