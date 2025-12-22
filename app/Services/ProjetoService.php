@@ -264,7 +264,7 @@ class ProjetoService
         if (isset($template['arquivos_base'])) {
             foreach ($template['arquivos_base'] as $arquivo) {
                 $caminho = $arquivo['caminho'] ?? '';
-                
+
                 // ✅ Verificar se é logo ou favicon (arquivos binários)
                 if (str_contains($caminho, 'ippls-logo-removebg-preview.png')) {
                     $logoPath = public_path('img/logo/ippls-logo-removebg-preview.png');

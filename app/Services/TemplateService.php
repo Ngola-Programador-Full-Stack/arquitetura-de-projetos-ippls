@@ -69,7 +69,23 @@ class TemplateService
     {
         $nomeSanitizado = Str::slug($template->nome, '_');
         $nivelSanitizado = Str::slug($template->nivel, '_');
-        $zipFileName = "template_{$nomeSanitizado}_{$nivelSanitizado}.zip";
+
+        // Normalizar nome do arquivo para evitar duplicações como:
+        // template_template_base_base.zip
+        // Estratégia:
+        // - Se o nome já começa com "template_", não acrescentamos outro prefixo
+        // - Se o nome já termina com o nível (ex: "_base"), não acrescentamos o nível novamente
+        if (str_starts_with($nomeSanitizado, 'template_')) {
+            $baseName = $nomeSanitizado;
+        } else {
+            $baseName = "template_{$nomeSanitizado}";
+        }
+
+        if ($nivelSanitizado !== '' && !str_ends_with($baseName, "_{$nivelSanitizado}")) {
+            $zipFileName = "{$baseName}_{$nivelSanitizado}.zip";
+        } else {
+            $zipFileName = "{$baseName}.zip";
+        }
         $zipPath = storage_path("app/temp/{$zipFileName}");
 
         // Garantir que o diretório existe
@@ -87,7 +103,7 @@ class TemplateService
 
         $zip = new ZipArchive();
         $result = $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-        
+
         if ($result !== true) {
             $errorMessages = [
                 ZipArchive::ER_OK => 'Nenhum erro',
@@ -115,14 +131,14 @@ class TemplateService
                 ZipArchive::ER_REMOVE => 'Can\'t remove file',
                 ZipArchive::ER_DELETED => 'Entry has been deleted',
             ];
-            
+
             $errorMsg = $errorMessages[$result] ?? "Erro desconhecido (código: {$result})";
             \Log::error('Erro ao abrir ZIP', [
                 'caminho' => $zipPath,
                 'erro' => $errorMsg,
                 'codigo' => $result
             ]);
-            
+
             throw new \RuntimeException("Não foi possível criar o arquivo compactado: {$errorMsg}");
         }
 
@@ -138,17 +154,17 @@ class TemplateService
         // Adicionar estrutura e arquivos
         $this->adicionarEstruturaDiretorios($zip, $estruturaNormalizada);
         $this->adicionarArquivosBase($zip, $arquivosNormalizados);
-        
+
         // ✅ Adicionar logo e favicon se existirem no template
         $this->adicionarAssetsBinarios($zip, $arquivosNormalizados);
-        
+
         // Log para debug
         \Log::info('Adicionando ao ZIP', [
             'estrutura_count' => count($estrutura ?? []),
             'arquivos_count' => count($arquivos ?? []),
             'arquivos_zip_antes' => $zip->numFiles
         ]);
-        
+
         // Adicionar um README mínimo se não houver arquivos
         if ($zip->numFiles === 0) {
             $readmeContent = "# {$template->nome}\n\n{$template->descricao}\n\n## Nível: " . ucfirst($template->nivel) . "\n\nEste template foi gerado automaticamente pela plataforma IPPLS.";
@@ -157,22 +173,22 @@ class TemplateService
             }
             \Log::info('README adicionado ao ZIP vazio', ['arquivos_zip' => $zip->numFiles]);
         }
-        
+
         // Salvar número de arquivos antes de fechar
         $numFiles = $zip->numFiles;
-        
+
         // Verificar se há pelo menos um arquivo antes de fechar
         if ($numFiles === 0) {
             $zip->close();
             throw new \RuntimeException('Nenhum arquivo foi adicionado ao ZIP. Verifique a estrutura e arquivos do template.');
         }
-        
+
         // Fechar o ZIP
         if (!$zip->close()) {
             \Log::error('Erro ao fechar ZIP', ['caminho' => $zipPath, 'arquivos' => $numFiles]);
             throw new \RuntimeException('Não foi possível finalizar o arquivo compactado.');
         }
-        
+
         \Log::info('ZIP fechado com sucesso', ['arquivos' => $numFiles]);
 
         // Verificar se o arquivo foi criado
@@ -214,11 +230,11 @@ class TemplateService
             if ($item['tipo'] === 'pasta' || $item['tipo'] === 'folder') {
                 // Garantir que o caminho termine com /
                 $caminhoDir = rtrim($caminho, '/') . '/';
-                
+
                 if ($zip->addEmptyDir($caminhoDir) === false) {
                     \Log::warning('Falha ao adicionar diretório ao ZIP', ['caminho' => $caminhoDir]);
                 }
-                
+
                 if (isset($item['filhos']) && is_array($item['filhos']) && !empty($item['filhos'])) {
                     $this->adicionarEstruturaDiretorios($zip, $item['filhos'], $caminhoDir);
                 }
@@ -235,16 +251,20 @@ class TemplateService
             }
 
             $caminho = ltrim($arquivo['caminho'], '/');
-            
-            // ✅ Verificar se é arquivo binário (logo ou favicon)
-            if (str_contains($caminho, 'ippls-logo-removebg-preview.png') || 
-                str_contains($caminho, 'favicon.ico')) {
+
+            // ✅ Verificar se é arquivo binário (logo ou favicon, fontawesome: all.min.css, fa-brands-400.woff2, fa-regular-400.woff2, fa-solid-900.woff2)
+            if (str_contains($caminho, 'ippls-logo-removebg-preview.png') ||
+                str_contains($caminho, 'favicon.ico' ||
+                str_contains($caminho, 'all.min.css') ||
+                str_contains($caminho, 'fa-brands-400.woff2') ||
+                str_contains($caminho, 'fa-regular-400.woff2') ||
+                str_contains($caminho, 'fa-solid-900.woff2'))) {
                 // Pular aqui - será adicionado por adicionarAssetsBinarios
                 continue;
             }
 
             $conteudo = $arquivo['template'] ?? $arquivo['conteudo'] ?? '';
-            
+
             if ($zip->addFromString($caminho, $conteudo) === false) {
                 \Log::warning('Falha ao adicionar arquivo ao ZIP', [
                     'caminho' => $caminho,
@@ -265,7 +285,7 @@ class TemplateService
             }
 
             $caminho = ltrim($arquivo['caminho'], '/');
-            
+
             // ✅ Adicionar logo IPPLS
             if (str_contains($caminho, 'ippls-logo-removebg-preview.png')) {
                 $logoPath = public_path('img/logo/ippls-logo-removebg-preview.png');
@@ -275,7 +295,7 @@ class TemplateService
                     }
                 }
             }
-            
+
             // ✅ Adicionar favicon
             if (str_contains($caminho, 'favicon.ico')) {
                 $faviconPath = public_path('favicon.ico');
@@ -285,6 +305,183 @@ class TemplateService
                     }
                 }
             }
+
+            /*
+                ✅ Adicionar fontawesome css file
+            */
+            // all.min.css
+            if (str_contains($caminho, 'all.min.css')) {
+                $faallmincssPath = public_path('fontawesome-free-7.1.0-web/css/all.min.css');
+                if (file_exists($faallmincssPath)) {
+                    if ($zip->addFile($faallmincssPath, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar fontawesome - fa-brands-400.woff2 ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // ✅ Adicionar fontawesome web fonts
+            // fa-brands-400.woff2
+            if (str_contains($caminho, 'fa-brands-400.woff2')) {
+                $fabrands400Path = public_path('fontawesome-free-7.1.0-web/webfonts/fa-brands-400.woff2');
+                if (file_exists($fabrands400Path)) {
+                    if ($zip->addFile($fabrands400Path, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar fontawesome - fa-brands-400.woff2 ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+            // fa-regular-400.woff2
+            if (str_contains($caminho, 'fa-regular-400.woff2')) {
+                $faregular400Path = public_path('fontawesome-free-7.1.0-web/webfonts/fa-regular-400.woff2');
+                if (file_exists($faregular400Path)) {
+                    if ($zip->addFile($faregular400Path, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar fontawesome - fa-regular-400.woff2 ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+            // fa-solid-900.woff2
+            if (str_contains($caminho, 'fa-solid-900.woff2')) {
+                $fasolid900Path = public_path('fontawesome-free-7.1.0-web/webfonts/fa-solid-900.woff2');
+                if (file_exists($fasolid900Path)) {
+                    if ($zip->addFile($fasolid900Path, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar fontawesome - fa-solid-900.woff2 ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            /*
+                ✅ Adicionar svg dos locos na skills
+            */
+            // Skills do Apache
+            if (str_contains($caminho, 'apache.svg')) {
+                $apacheSVG = public_path('img/skills/apache.svg');
+                if (file_exists($apacheSVG)) {
+                    if ($zip->addFile($apacheSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Apache ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Skills do Composer
+            if (str_contains($caminho, 'composer.svg')) {
+                $composerSVG = public_path('img/skills/composer.svg');
+                if (file_exists($composerSVG)) {
+                    if ($zip->addFile($composerSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Composer ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Skills do Css3
+            if (str_contains($caminho, 'css3.svg')) {
+                $css3SVG = public_path('img/skills/css3.svg');
+                if (file_exists($css3SVG)) {
+                    if ($zip->addFile($css3SVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Css3 ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Skills do Git
+            if (str_contains($caminho, 'git.svg')) {
+                $gitSVG = public_path('img/skills/git.svg');
+                if (file_exists($gitSVG)) {
+                    if ($zip->addFile($gitSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Git ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Skills do Html5
+            if (str_contains($caminho, 'html5.svg')) {
+                $html5SVG = public_path('img/skills/html5.svg');
+                if (file_exists($html5SVG)) {
+                    if ($zip->addFile($html5SVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Html5 ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Skills do Javascript
+            if (str_contains($caminho, 'javascript.svg')) {
+                $javascriptSVG = public_path('img/skills/javascript.svg');
+                if (file_exists($javascriptSVG)) {
+                    if ($zip->addFile($javascriptSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do JavascriptSVG ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Skills do Mysql
+            if (str_contains($caminho, 'mysql.svg')) {
+                $mysqlSVG = public_path('img/skills/mysql.svg');
+                if (file_exists($mysqlSVG)) {
+                    if ($zip->addFile($mysqlSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do MySql ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Skills do Php
+            if (str_contains($caminho, 'php.svg')) {
+                $phpSVG = public_path('img/skills/php.svg');
+                if (file_exists($phpSVG)) {
+                    if ($zip->addFile($phpSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Php ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Skills do Xampp
+            if (str_contains($caminho, 'xampp.svg')) {
+                $xamppSVG = public_path('img/skills/xampp.svg');
+                if (file_exists($xamppSVG)) {
+                    if ($zip->addFile($xamppSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Xampp ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Logo do MySql
+            if (str_contains($caminho, 'mysql.svg')) {
+                $mySqlSVG = public_path('img/logo/mysql.svg');
+                if (file_exists($mySqlSVG)) {
+                    if ($zip->addFile($mySqlSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do MySql ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Logo do Php
+            if (str_contains($caminho, 'php.svg')) {
+                $phpMITSVG = public_path('img/logo/php.svg');
+                if (file_exists($phpMITSVG)) {
+                    if ($zip->addFile($phpMITSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Php ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Logo do Composer
+            if (str_contains($caminho, 'composer.svg')) {
+                $ComposerMITSVG = public_path('img/logo/composer.svg');
+                if (file_exists($ComposerMITSVG)) {
+                    if ($zip->addFile($ComposerMITSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo do Composer ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+            // Logo da Licensa do MIT
+            if (str_contains($caminho, 'license.svg')) {
+                $licenseMITSVG = public_path('img/logo/license.svg');
+                if (file_exists($licenseMITSVG)) {
+                    if ($zip->addFile($licenseMITSVG, $caminho) === false) {
+                        \Log::warning('Falha ao adicionar logo da License do MIT ao ZIP', ['caminho' => $caminho]);
+                    }
+                }
+            }
+
+
         }
     }
 

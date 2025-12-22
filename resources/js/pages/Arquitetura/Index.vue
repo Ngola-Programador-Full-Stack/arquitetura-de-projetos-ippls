@@ -2,46 +2,47 @@
 import AppFooter from '@/components/AppFooter.vue';
 import ContactSection from '@/components/ContactSection.vue';
 import Navbar from '@/components/Navbar.vue';
-import { Link, Head } from '@inertiajs/vue3';
-import { Cpu, Database, FileCode, Sparkles } from 'lucide-vue-next';
+import { Head } from '@inertiajs/vue3';
+import ArchitectureLevels from '@/components/ArchitectureLevels.vue';
+//import { Cpu, Database, FileCode, Sparkles } from 'lucide-vue-next';
 
-const architectureLevels = [
-    {
-        level: 'Base',
-        routeName: 'templates.base',
-        icon: FileCode,
-        description: 'Estrutura MVC fundamental e direta',
-        features: ['Models básicos', 'Views simples', 'Controllers essenciais', 'Configuração mínima', 'Rotas básicas'],
-        color: 'from-[#4A8FC4] to-[#6BA3D4]',
-        price: 'Gratuito',
-    },
-    {
-        level: 'Padrão',
-        routeName: 'templates.padrao',
-        icon: Database,
-        description: 'MVC completo com helpers e middlewares',
-        features: [
-            'Models + Services',
-            'Views + Components',
-            'Controllers + Middleware',
-            'Helpers & Utils',
-            'Validações avançadas',
-            'Sistema de cache',
-        ],
-        color: 'from-[#F4B41A] to-[#F7C950]',
-        featured: true,
-        price: 'Gratuito',
-    },
-    {
-        level: 'Avançado',
-        routeName: 'templates.avancado',
-        icon: Cpu,
-        description: 'Arquitetura enterprise completa',
-        features: ['Core System', 'Advanced Services', 'Middleware Chain', 'API Integration', 'Testing Suite', 'CI/CD Pipeline'],
-        color: 'from-[#C1272D] to-[#E04850]',
-        price: 'Gratuito',
-    },
-];
+// const architectureLevels = [
+//     {
+//         level: 'Base',
+//         routeName: 'templates.base',
+//         icon: FileCode,
+//         description: 'Estrutura MVC fundamental e direta',
+//         features: ['Models básicos', 'Views simples', 'Controllers essenciais', 'Configuração mínima', 'Rotas básicas'],
+//         color: 'from-[#4A8FC4] to-[#6BA3D4]',
+//         price: 'Gratuito',
+//     },
+//     {
+//         level: 'Padrão',
+//         routeName: 'templates.padrao',
+//         icon: Database,
+//         description: 'MVC completo com helpers e middlewares',
+//         features: [
+//             'Models + Services',
+//             'Views + Components',
+//             'Controllers + Middleware',
+//             'Helpers & Utils',
+//             'Validações avançadas',
+//             'Sistema de cache',
+//         ],
+//         color: 'from-[#F4B41A] to-[#F7C950]',
+//         featured: true,
+//         price: 'Gratuito',
+//     },
+//     {
+//         level: 'Avançado',
+//         routeName: 'templates.avancado',
+//         icon: Cpu,
+//         description: 'Arquitetura enterprise completa',
+//         features: ['Core System', 'Advanced Services', 'Middleware Chain', 'API Integration', 'Testing Suite', 'CI/CD Pipeline'],
+//         color: 'from-[#C1272D] to-[#E04850]',
+//         price: 'Gratuito',
+//     },
+// ];
 </script>
 <template>
     <Head title="Arquiteturas" />
@@ -50,7 +51,8 @@ const architectureLevels = [
         <Navbar />
 
         <!-- Conteúdo Principal -->
-        <section
+         <ArchitectureLevels />
+        <!-- <section
             id="architecture"
             class="bg-[url('https://pagedone.io/asset/uploads/1691055810.png')] bg-cover bg-center px-4 py-24 sm:px-6 lg:px-8 dark:bg-[#010226]"
         >
@@ -125,7 +127,7 @@ const architectureLevels = [
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <!-- Tecnologia Moderna -->
         <ContactSection />

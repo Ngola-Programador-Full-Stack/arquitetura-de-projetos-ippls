@@ -121,7 +121,7 @@ arquitetura-de-projetos-ippls/
 │   │   ├── layouts/         # Layouts da aplicação
 │   │   └── pages/           # Páginas Inertia
 │   └── css/                # Estilos CSS
-├── routes/
+├── routes/ø
 │   ├── web.php             # Rotas web
 │   ├── auth.php            # Rotas de autenticação
 │   └── estudante.php       # Rotas específicas de estudantes
