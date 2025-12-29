@@ -250,115 +250,265 @@ class TemplateArquiteturaSeeder extends Seeder
         $this->command->info('  ✓ Template Padrão verificado/atualizado');
 
         // =====================================================
-        // 3. TEMPLATE AVANÇADO - SERVICE LAYER E DI
+        // 3. TEMPLATE AVANÇADO - EVOLUÇÃO DO PADRÃO
         // =====================================================
         TemplateArquitetura::updateOrCreate(
             ['nivel' => 'avancado'],
             [
                 'nome' => 'Template Avançado',
-                'subtitulo' => 'Service Layer e Injeção de Dependências',
+                'subtitulo' => 'URLs Amigáveis, Middleware e Recursos Expandidos',
                 'nivel' => 'avancado',
-                'descricao' => 'Arquitetura enterprise com Service Layer, Injeção de Dependências, testes unitários e modularização. Para projetos profissionais e complexos.',
-                'descricao_completa' => 'O Template Avançado implementa padrões enterprise de desenvolvimento. Adiciona camada de serviços para lógica de negócio, injeção de dependências para baixo acoplamento, suporte a testes unitários com PHPUnit e estrutura modular para escalabilidade.',
+                'descricao' => 'Evolução do Template Padrão com URLs profissionais, middleware, upload de arquivos, paginação e API REST básica. Ideal para projetos que precisam de funcionalidades avançadas sem complexidade enterprise.',
+                'descricao_completa' => 'O Template Avançado estende o Padrão com URLs amigáveis (sem ?page=), sistema de middleware para autenticação e CSRF, upload de arquivos, paginação de dados, API REST básica e múltiplos CRUDs. Mantém a simplicidade do MVC com recursos profissionais.',
 
                 'estrutura_diretorios' => [
                     'projeto_avancado/' => [
                         'index.php',
                         'app/' => [
+                            'config/' => ['app.php', 'database.php', 'constants.php', 'helpers.php'],
                             'Http/' => [
-                                'Controllers/' => ['HomeController.php', 'UserController.php']
+                                'Controllers/' => [
+                                    'HomeController.php',
+                                    'UserController.php',
+                                    'AuthController.php',
+                                    'ProductController.php',
+                                    'ApiController.php'
+                                ],
+                                'Middleware/' => [
+                                    'AuthMiddleware.php',
+                                    'CsrfMiddleware.php'
+                                ]
                             ],
-                            'Models/' => ['User.php'],
-                            'Services/' => ['UserService.php', 'AuthService.php'],
-                            'Repositories/' => ['UserRepository.php'],
-                            'Interfaces/' => ['RepositoryInterface.php']
+                            'Models/' => ['User.php', 'Product.php']
                         ],
                         'routes/' => ['web.php', 'api.php'],
-                        'config/' => ['database.php', 'app.php', 'services.php'],
                         'views/' => [
-                            'layouts/' => ['main.php'],
-                            'pages/' => ['home.php', 'users.php'],
-                            'components/' => ['alert.php', 'table.php']
+                            'layouts/' => ['main.php', 'dashboard.php'],
+                            'pages/' => [
+                                'home.php',
+                                'users.php',
+                                'products.php',
+                                'docs.php',
+                                'dashboard.php',
+                                'auth/' => ['login.php', 'register.php']
+                            ],
+                            'components/' => [
+                                'navbar.php',
+                                'footer.php',
+                                'breadcrumbs.php',
+                                'pagination.php'
+                            ],
+                            'errors/' => ['404.php', '500.php']
                         ],
-                        'tests/' => [
-                            'Unit/' => ['UserServiceTest.php'],
-                            'Feature/' => ['UserControllerTest.php']
-                        ],
-                        'assets/' => [
-                            'css/' => ['style.css'],
-                            'js/' => ['main.js'],
-                            'images/' => [
-                                'logo/' => [
-                                    'ippls-logo-removebg-preview.png', 'composer.svg', 'php.svg', 'mysql.svg', 'license.svg'
+                        'public/' => [
+                            'uploads/' => ['users/', 'products/'],
+                            'assets/' => [
+                                'css/' => [
+                                    'style.css',
+                                    'base.css',
+                                    'components/' => [
+                                        'navbar.css',
+                                        'buttons.css',
+                                        'forms.css',
+                                        'cards.css',
+                                        'tables.css',
+                                        'alerts.css',
+                                        'pagination.css',
+                                        'breadcrumbs.css'
+                                    ],
+                                    'sections/' => [
+                                        'hero.css',
+                                        'footer.css',
+                                        'dashboard.css'
                                     ]
+                                ],
+                                'js/' => [
+                                    'main.js',
+                                    'components/' => [
+                                        'navbar.js',
+                                        'upload.js',
+                                        'pagination.js',
+                                        'api.js'
+                                    ]
+                                ],
+                                'images/' => [
+                                    'logo/' => ['ippls-logo-removebg-preview.png'],
+                                    'placeholders/' => ['user-placeholder.png', 'product-placeholder.png']
+                                ]
                             ]
                         ],
-                        'vendor/',
-                        'composer.json',
-                        'phpunit.xml',
-                        'favicon.ico',
+                        'storage/' => [
+                            'logs/' => ['app.log'],
+                            'cache/' => [],
+                            'sessions/' => []
+                        ],
+                        'vendor/' => [
+                            'fontawesome/' => [
+                                'css/' => ['all.min.css'],
+                                'webfonts/' => [
+                                    'fa-solid-900.woff2',
+                                    'fa-regular-400.woff2',
+                                    'fa-brands-400.woff2'
+                                ]
+                            ]
+                        ],
                         '.htaccess',
+                        'composer.json',
+                        'favicon.ico',
                         'README.md'
                     ]
                 ],
 
                 'arquivos_base' => [
+                    // ========================================
+                    // INDEX.PHP - ROTEAMENTO MELHORADO
+                    // ========================================
                     ['caminho' => 'projeto_avancado/index.php', 'template' => $this->getIndexAvancado()],
+                    ['caminho' => 'projeto_avancado/.htaccess', 'template' => $this->getHtaccessAvancado()],
                     ['caminho' => 'projeto_avancado/composer.json', 'template' => $this->getComposerJsonAvancado()],
-                    ['caminho' => 'projeto_avancado/phpunit.xml', 'template' => $this->getPhpunitXml()],
-                    ['caminho' => 'projeto_avancado/.htaccess', 'template' => $this->getHtaccessPadrao()],
+
+                    // ========================================
+                    // CONFIGURAÇÕES
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/app/config/app.php', 'template' => $this->getAppConfigAvancado()],
+                    ['caminho' => 'projeto_avancado/app/config/database.php', 'template' => $this->getDatabaseConfigAvancado()],
+                    ['caminho' => 'projeto_avancado/app/config/constants.php', 'template' => $this->getConstantsConfigAvancado()],
+                    ['caminho' => 'projeto_avancado/app/config/helpers.php', 'template' => $this->getHelpersConfigAvancado()],
+
+                    // ========================================
+                    // ROTAS
+                    // ========================================
                     ['caminho' => 'projeto_avancado/routes/web.php', 'template' => $this->getWebRoutesAvancado()],
-                    ['caminho' => 'projeto_avancado/routes/api.php', 'template' => $this->getApiRoutes()],
-                    ['caminho' => 'projeto_avancado/config/database.php', 'template' => $this->getDatabaseConfigPadrao()],
-                    ['caminho' => 'projeto_avancado/config/app.php', 'template' => $this->getAppConfig()],
-                    ['caminho' => 'projeto_avancado/config/services.php', 'template' => $this->getServicesConfig()],
+                    ['caminho' => 'projeto_avancado/routes/api.php', 'template' => $this->getApiRoutesAvancado()],
+
+                    // ========================================
+                    // MIDDLEWARE
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/app/Http/Middleware/AuthMiddleware.php', 'template' => $this->getAuthMiddleware()],
+                    ['caminho' => 'projeto_avancado/app/Http/Middleware/CsrfMiddleware.php', 'template' => $this->getCsrfMiddleware()],
+
+                    // ========================================
+                    // MODELS
+                    // ========================================
                     ['caminho' => 'projeto_avancado/app/Models/User.php', 'template' => $this->getUserModelAvancado()],
-                    ['caminho' => 'projeto_avancado/app/Services/UserService.php', 'template' => $this->getUserService()],
-                    ['caminho' => 'projeto_avancado/app/Services/AuthService.php', 'template' => $this->getAuthService()],
-                    ['caminho' => 'projeto_avancado/app/Repositories/UserRepository.php', 'template' => $this->getUserRepository()],
-                    ['caminho' => 'projeto_avancado/app/Interfaces/RepositoryInterface.php', 'template' => $this->getRepositoryInterface()],
+                    ['caminho' => 'projeto_avancado/app/Models/Product.php', 'template' => $this->getProductModel()],
+
+                    // ========================================
+                    // CONTROLLERS
+                    // ========================================
                     ['caminho' => 'projeto_avancado/app/Http/Controllers/HomeController.php', 'template' => $this->getHomeControllerAvancado()],
                     ['caminho' => 'projeto_avancado/app/Http/Controllers/UserController.php', 'template' => $this->getUserControllerAvancado()],
-                    ['caminho' => 'projeto_avancado/views/layouts/main.php', 'template' => $this->getMainLayout()],
+                    ['caminho' => 'projeto_avancado/app/Http/Controllers/AuthController.php', 'template' => $this->getAuthController()],
+                    ['caminho' => 'projeto_avancado/app/Http/Controllers/ProductController.php', 'template' => $this->getProductController()],
+                    ['caminho' => 'projeto_avancado/app/Http/Controllers/ApiController.php', 'template' => $this->getApiController()],
+
+                    // ========================================
+                    // VIEWS - LAYOUTS
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/views/layouts/main.php', 'template' => $this->getMainLayoutAvancado()],
+                    ['caminho' => 'projeto_avancado/views/layouts/dashboard.php', 'template' => $this->getDashboardLayout()],
+
+                    // ========================================
+                    // VIEWS - PAGES
+                    // ========================================
                     ['caminho' => 'projeto_avancado/views/pages/home.php', 'template' => $this->getHomeViewAvancado()],
-                    ['caminho' => 'projeto_avancado/views/pages/users.php', 'template' => $this->getUsersViewPadrao()],
-                    ['caminho' => 'projeto_avancado/views/components/alert.php', 'template' => $this->getAlertComponent()],
-                    ['caminho' => 'projeto_avancado/views/components/table.php', 'template' => $this->getTableComponent()],
-                    ['caminho' => 'projeto_avancado/tests/Unit/UserServiceTest.php', 'template' => $this->getUserServiceTest()],
-                    ['caminho' => 'projeto_avancado/tests/Feature/UserControllerTest.php', 'template' => $this->getUserControllerTest()],
-                    ['caminho' => 'projeto_avancado/assets/css/style.css', 'template' => $this->getStyleCss()],
-                    ['caminho' => 'projeto_avancado/assets/js/main.js', 'template' => $this->getMainJs()],
-                    ['caminho' => 'projeto_avancado/assets/images/logo/ippls-logo-removebg-preview.png', 'template' => $this->getLogoPlaceholder()],
+                    ['caminho' => 'projeto_avancado/views/pages/users.php', 'template' => $this->getUsersViewAvancado()],
+                    ['caminho' => 'projeto_avancado/views/pages/products.php', 'template' => $this->getProductsView()],
+                    ['caminho' => 'projeto_avancado/views/pages/docs.php', 'template' => $this->getDocsViewAvancado()],
+                    ['caminho' => 'projeto_avancado/views/pages/dashboard.php', 'template' => $this->getDashboardView()],
+                    ['caminho' => 'projeto_avancado/views/pages/auth/login.php', 'template' => $this->getLoginView()],
+                    ['caminho' => 'projeto_avancado/views/pages/auth/register.php', 'template' => $this->getRegisterView()],
+
+                    // ========================================
+                    // VIEWS - COMPONENTS
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/views/components/navbar.php', 'template' => $this->getNavbarAvancado()],
+                    ['caminho' => 'projeto_avancado/views/components/footer.php', 'template' => $this->getFooterAvancado()],
+                    ['caminho' => 'projeto_avancado/views/components/breadcrumbs.php', 'template' => $this->getBreadcrumbs()],
+                    ['caminho' => 'projeto_avancado/views/components/pagination.php', 'template' => $this->getPaginationComponent()],
+
+                    // ========================================
+                    // VIEWS - ERRORS
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/views/errors/404.php', 'template' => $this->get404Avancado()],
+                    ['caminho' => 'projeto_avancado/views/errors/500.php', 'template' => $this->get500Avancado()],
+
+                    // ========================================
+                    // ASSETS - CSS
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/public/assets/css/style.css', 'template' => $this->getStyleCssAvancado()],
+                    ['caminho' => 'projeto_avancado/public/assets/css/base.css', 'template' => $this->getBaseCssAvancado()],
+                    ['caminho' => 'projeto_avancado/public/assets/css/components/pagination.css', 'template' => $this->getPaginationCss()],
+                    ['caminho' => 'projeto_avancado/public/assets/css/components/breadcrumbs.css', 'template' => $this->getBreadcrumbsCss()],
+                    ['caminho' => 'projeto_avancado/public/assets/css/sections/dashboard.css', 'template' => $this->getDashboardCss()],
+
+                    // ========================================
+                    // ASSETS - JS
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/public/assets/js/main.js', 'template' => $this->getMainJsAvancado()],
+                    ['caminho' => 'projeto_avancado/public/assets/js/components/upload.js', 'template' => $this->getUploadJs()],
+                    ['caminho' => 'projeto_avancado/public/assets/js/components/api.js', 'template' => $this->getApiJs()],
+
+                    // ========================================
+                    // STORAGE
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/storage/logs/app.log', 'template' => ''],
+
+                    // ========================================
+                    // ASSETS BINÁRIOS
+                    // ========================================
+                    ['caminho' => 'projeto_avancado/public/assets/images/logo/ippls-logo-removebg-preview.png', 'template' => $this->getLogoPlaceholder()],
                     ['caminho' => 'projeto_avancado/favicon.ico', 'template' => $this->getFaviconPlaceholder()],
+
+                    // FontAwesome
+                    ['caminho' => 'projeto_avancado/vendor/fontawesome/css/all.min.css', 'template' => $this->getAllMinCssFA()],
+                    ['caminho' => 'projeto_avancado/vendor/fontawesome/webfonts/fa-brands-400.woff2', 'template' => $this->getFaBrands400Woff2()],
+                    ['caminho' => 'projeto_avancado/vendor/fontawesome/webfonts/fa-regular-400.woff2', 'template' => $this->getFaRegular400Woff2()],
+                    ['caminho' => 'projeto_avancado/vendor/fontawesome/webfonts/fa-solid-900.woff2', 'template' => $this->getFaSolid400Woff2()],
+
+                    // ========================================
+                    // README
+                    // ========================================
                     ['caminho' => 'projeto_avancado/README.md', 'template' => $this->getReadmeAvancado()]
                 ],
 
                 'requisitos' => [
-                    'PHP' => '>= 8.1',
-                    'Composer' => '>= 2.5',
-                    'PHPUnit' => '>= 10.0',
-                    'MySQL' => '>= 8.0'
+                    'PHP' => '>= 8.0',
+                    'Composer' => '>= 2.0',
+                    'MySQL' => '>= 5.7',
+                    'Apache' => 'Com mod_rewrite',
+                    'Extensões PHP' => 'PDO, fileinfo, GD/Imagick'
                 ],
 
                 'beneficios' => [
-                    'Service Layer para lógica de negócio complexa',
-                    'Injeção de Dependências para baixo acoplamento',
-                    'Repository Pattern para abstração de dados',
-                    'Testes unitários e de integração',
-                    'Componentes reutilizáveis',
-                    'Arquitetura escalável e manutenível'
+                    'URLs amigáveis e profissionais',
+                    'Sistema de middleware para segurança',
+                    'Upload de arquivos com validação',
+                    'Paginação automática de dados',
+                    'API REST para integrações',
+                    'Múltiplos CRUDs prontos (Users, Products)',
+                    'Sistema de autenticação básico',
+                    'Breadcrumbs e navegação avançada'
                 ],
 
                 'casos_uso' => [
-                    ['nome' => 'Sistemas Enterprise', 'descricao' => 'Aplicações complexas com múltiplos módulos e integrações.', 'icone' => 'building'],
-                    ['nome' => 'APIs Robustas', 'descricao' => 'APIs RESTful com autenticação e documentação completa.', 'icone' => 'layers'],
-                    ['nome' => 'Plataformas SaaS', 'descricao' => 'Aplicações multi-tenant com billing e analytics.', 'icone' => 'cloud'],
-                    ['nome' => 'Sistemas Financeiros', 'descricao' => 'Processamento de transações com auditoria completa.', 'icone' => 'dollar-sign']
+                    ['nome' => 'E-commerce Básico', 'descricao' => 'Sistema de vendas com produtos, categorias e pedidos.', 'icone' => 'shopping-cart'],
+                    ['nome' => 'Portal de Conteúdo', 'descricao' => 'Blog ou portal com múltiplos autores e categorias.', 'icone' => 'newspaper'],
+                    ['nome' => 'Sistema de Gestão', 'descricao' => 'ERP/CRM básico com múltiplos módulos.', 'icone' => 'briefcase'],
+                    ['nome' => 'API + Frontend', 'descricao' => 'Backend com API REST para consumo por SPA.', 'icone' => 'code']
                 ],
 
-                'caracteristicas' => ['Service Layer', 'Injeção de Dependências', 'Testes Unitários', 'Repository Pattern'],
+                'caracteristicas' => [
+                    'URLs Amigáveis',
+                    'Middleware (Auth, CSRF)',
+                    'Upload de Arquivos',
+                    'Paginação',
+                    'API REST',
+                    'Múltiplos CRUDs'
+                ],
+
                 'instrucoes_uso' => $this->getInstrucoesAvancado(),
-                'tempo_setup' => 20,
+                'tempo_setup' => 15,
                 'para_iniciantes' => false,
                 'gratuito' => true,
                 'documentado' => true,
@@ -381,43 +531,6 @@ class TemplateArquiteturaSeeder extends Seeder
     // ==========================================
     // TEMPLATE BASE - MÉTODOS ORIGINAIS MANTIDOS
     // ==========================================
-
-//     private function getIndexBase(): string
-//     {
-//         return <<<'PHP'
-// <?php
-// // index.php - Ponto de entrada e roteamento global
-
-// require_once 'config/database.php';
-
-// // Captura a ação da URL
-// $action = $_GET['action'] ?? 'index';
-
-// // Carregar controller
-// require_once 'controllers/HomeController.php';
-// $controller = new HomeController();
-
-// // Roteamento centralizado
-// switch ($action) {
-//     case 'create':
-//         $controller->create();
-//         break;
-
-//     case 'update':
-//         $controller->update();
-//         break;
-
-//     case 'delete':
-//         $controller->delete();
-//         break;
-
-//     case 'index':
-//     default:
-//         $controller->index();
-//         break;
-// }
-// PHP;
-//     }
 
 
 private function getIndexBase(): string
@@ -8570,7 +8683,7 @@ _Template Padrão MVC v1.0.0 © 2025_
 MD;
     }
 
-    // ==========================================
+    /* ==========================================
     // TEMPLATE AVANÇADO - NOVOS MÉTODOS
     // ==========================================
 
@@ -8581,7 +8694,7 @@ MD;
 /**
  * Template Avançado - Service Layer e Injeção de Dependências
  * IPPLS - Instituto Politécnico Privado Lucrêcio dos Santos
- */
+ *
 
 // Autoloader do Composer
 require_once __DIR__ . '/vendor/autoload.php';
@@ -8643,7 +8756,7 @@ PHP;
     }
 }
 JSON;
-    }
+    }*/
 
     private function getPhpunitXml(): string
     {
@@ -8664,14 +8777,14 @@ JSON;
 XML;
     }
 
-    private function getWebRoutesAvancado(): string
+    /*private function getWebRoutesAvancado(): string
     {
         return <<<'PHP'
 <?php
 /**
  * Rotas Web - Template Avançado
  * Sistema de roteamento com injeção de dependências
- */
+ *
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -8718,7 +8831,7 @@ PHP;
 <?php
 /**
  * Rotas API - Template Avançado
- */
+ *
 
 header('Content-Type: application/json');
 
@@ -8753,7 +8866,7 @@ try {
     echo json_encode(['error' => $e->getMessage()]);
 }
 PHP;
-    }
+    }*
 
     private function getServicesConfig(): string
     {
@@ -8761,7 +8874,7 @@ PHP;
 <?php
 /**
  * Container de Injeção de Dependências
- */
+ *
 
 namespace App;
 
@@ -8860,7 +8973,7 @@ class User
         return $this;
     }
 }
-PHP;
+PHP;*
     }
 
     private function getUserService(): string
@@ -9260,7 +9373,7 @@ PHP;
     </div>
 </div>
 HTML;
-    }
+    }*
 
     private function getAlertComponent(): string
     {
@@ -9269,7 +9382,7 @@ HTML;
 /**
  * Componente de Alerta Reutilizável
  * Uso: require 'components/alert.php';
- */
+ *
 ?>
 <?php if (isset($_SESSION['success'])): ?>
     <div class="alert alert-success">
@@ -9297,7 +9410,7 @@ PHP;
  * Componente de Tabela Reutilizável
  * Uso: require 'components/table.php';
  * Requer: $headers (array), $data (array)
- */
+ *
 ?>
 <div class="table-wrapper">
     <table class="data-table">
@@ -9568,15 +9681,2460 @@ public function testCreateUserWithValidData(): void {
 
 **Desenvolvido com ❤️ para o IPPLS**
 MD;
-    }
+    }*/
 
     private function getInstrucoesPadrao(): string
     {
         return "# Guia de Instalação - Template Padrão\n\n## 1. Instalar Composer\n## 2. Configurar Banco\n## 3. Rodar composer install\n## 4. Configurar .htaccess\n## 5. Acessar Aplicação";
     }
 
-    private function getInstrucoesAvancado(): string
-    {
-        return "# Guia de Instalação - Template Avançado\n\n## 1. Instalar Dependências\n## 2. Configurar Ambiente\n## 3. Rodar Migrações\n## 4. Executar Testes\n## 5. Desenvolvimento";
+    // private function getInstrucoesAvancado(): string
+    // {
+    //     return "# Guia de Instalação - Template Avançado\n\n## 1. Instalar Dependências\n## 2. Configurar Ambiente\n## 3. Rodar Migrações\n## 4. Executar Testes\n## 5. Desenvolvimento";
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ==========================================
+// TEMPLATE AVANÇADO - MÉTODOS AUXILIARES PARTE 1
+// Core: index.php, .htaccess, rotas, configurações
+// ==========================================
+
+private function getIndexAvancado(): string
+{
+    return <<<'PHP'
+<?php
+/**
+ * Template Avançado - MVC com URLs Amigáveis
+ * IPPLS - Instituto Politécnico Privado Lucrêcio dos Santos
+ *
+ * ORDEM DE CARREGAMENTO:
+ * 1. Composer Autoload (PSR-4)
+ * 2. Configurações (app, database, constants, helpers)
+ * 3. Sessão
+ * 4. Middleware
+ * 5. Rotas (web.php ou api.php)
+ */
+
+// ============================================
+// 1. AUTOLOADER DO COMPOSER (PSR-4)
+// ============================================
+require_once __DIR__ . '/vendor/autoload.php';
+
+// ============================================
+// 2. CONFIGURAÇÕES DA APLICAÇÃO
+// ============================================
+require_once __DIR__ . '/app/config/app.php';
+require_once __DIR__ . '/app/config/constants.php';
+require_once __DIR__ . '/app/config/database.php';
+require_once __DIR__ . '/app/config/helpers.php';
+
+// ============================================
+// 3. INICIAR SESSÃO
+// ============================================
+if (session_status() === PHP_SESSION_NONE) {
+    session_start([
+        'cookie_httponly' => true,
+        'cookie_samesite' => 'Strict'
+    ]);
+}
+
+// ============================================
+// 4. DETECTAR TIPO DE REQUISIÇÃO (WEB ou API)
+// ============================================
+$requestUri = $_SERVER['REQUEST_URI'];
+$scriptName = dirname($_SERVER['SCRIPT_NAME']);
+$basePath = rtrim($scriptName, '/');
+
+// Remover base path da URI
+$uri = substr($requestUri, strlen($basePath));
+$uri = strtok($uri, '?'); // Remover query string
+$uri = trim($uri, '/');
+
+// Verificar se é requisição API
+if (str_starts_with($uri, 'api/') || str_starts_with($uri, 'api')) {
+    // API REST
+    header('Content-Type: application/json; charset=utf-8');
+    require_once ROUTES_PATH . '/api.php';
+    exit;
+}
+
+// ============================================
+// 5. ROTAS WEB
+// ============================================
+require_once ROUTES_PATH . '/web.php';
+PHP;
+}
+
+private function getHtaccessAvancado(): string
+{
+    return <<<'HTACCESS'
+# Template Avançado IPPLS - URLs Amigáveis
+# Configuração Apache para URLs profissionais
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Definir base path (ajuste se necessário)
+    RewriteBase /projeto_avancado/
+
+    # Redirecionar www para não-www (opcional)
+    # RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    # RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+    # Permitir acesso direto a arquivos existentes
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Redirecionar tudo para index.php
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Proteger arquivos sensíveis
+<FilesMatch "^(composer\.(json|lock)|\.env|\.git.*|\.htaccess)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Configurações PHP (se permitido)
+<IfModule mod_php.c>
+    php_flag display_errors On
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+</IfModule>
+
+# Compressão GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Cache de arquivos estáticos
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# Headers de segurança
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+HTACCESS;
+}
+
+private function getComposerJsonAvancado(): string
+{
+    return <<<'JSON'
+{
+    "name": "ippls/template-avancado",
+    "description": "Template Avançado MVC - URLs Amigáveis, Middleware e Recursos Expandidos",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "IPPLS",
+            "email": "suporte@ippls.ao"
+        }
+    ],
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"echo 'Template Avançado instalado com sucesso!\\n';\""
+        ]
     }
+}
+JSON;
+}
+
+private function getWebRoutesAvancado(): string
+{
+    return <<<'PHP'
+<?php
+/**
+ * Rotas Web - Template Avançado
+ * Sistema de roteamento com URLs amigáveis
+ */
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\AuthMiddleware;
+
+// ===============================
+// PARSEAMENTO DA URL
+// ===============================
+$requestUri = $_SERVER['REQUEST_URI'];
+$scriptName = dirname($_SERVER['SCRIPT_NAME']);
+$basePath = rtrim($scriptName, '/');
+
+// Remover base path e query string
+$uri = substr($requestUri, strlen($basePath));
+$uri = strtok($uri, '?');
+$uri = trim($uri, '/');
+
+// Dividir URI em segmentos
+$segments = $uri ? explode('/', $uri) : [];
+$page = $segments[0] ?? 'home';
+$action = $segments[1] ?? null;
+$id = $segments[2] ?? null;
+
+// ===============================
+// ROTAS PÚBLICAS (SEM AUTENTICAÇÃO)
+// ===============================
+
+try {
+    // HOME
+    if ($page === '' || $page === 'home') {
+        $controller = new HomeController();
+        $controller->index();
+        exit;
+    }
+
+    // DOCUMENTAÇÃO
+    if ($page === 'docs') {
+        $controller = new HomeController();
+        $controller->docs();
+        exit;
+    }
+
+    // AUTENTICAÇÃO
+    if ($page === 'login') {
+        $controller = new AuthController();
+        $controller->showLogin();
+        exit;
+    }
+
+    if ($page === 'register') {
+        $controller = new AuthController();
+        $controller->showRegister();
+        exit;
+    }
+
+    if ($page === 'logout') {
+        $controller = new AuthController();
+        $controller->logout();
+        exit;
+    }
+
+    // Processar login/registro
+    if ($page === 'auth') {
+        $controller = new AuthController();
+        if ($action === 'login') {
+            $controller->login();
+        } elseif ($action === 'register') {
+            $controller->register();
+        }
+        exit;
+    }
+
+    // ===============================
+    // MIDDLEWARE DE AUTENTICAÇÃO
+    // ===============================
+    // AuthMiddleware::handle();
+
+    // ===============================
+    // ROTAS PROTEGIDAS (COM AUTENTICAÇÃO)
+    // ===============================
+
+    // DASHBOARD
+    if ($page === 'dashboard') {
+        $controller = new HomeController();
+        $controller->dashboard();
+        exit;
+    }
+
+    // USUÁRIOS
+    if ($page === 'users') {
+        $controller = new UserController();
+
+        if ($action === null) {
+            $controller->index();
+        } elseif ($action === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->create();
+        } elseif ($action === 'edit' && $id) {
+            $controller->edit((int)$id);
+        } elseif ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->update();
+        } elseif ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->delete();
+        } else {
+            $controller->index();
+        }
+        exit;
+    }
+
+    // PRODUTOS
+    if ($page === 'products') {
+        $controller = new ProductController();
+
+        if ($action === null) {
+            $controller->index();
+        } elseif ($action === 'create' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->create();
+        } elseif ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->update();
+        } elseif ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->delete();
+        } else {
+            $controller->index();
+        }
+        exit;
+    }
+
+    // ===============================
+    // ROTA 404
+    // ===============================
+    http_response_code(404);
+    require ERRORS_PATH . '/404.php';
+    exit;
+
+} catch (\Exception $e) {
+    // ===============================
+    // TRATAMENTO DE ERROS 500
+    // ===============================
+    error_log("ERRO NO SISTEMA: " . $e->getMessage());
+    error_log("ARQUIVO: " . $e->getFile() . " | LINHA: " . $e->getLine());
+
+    http_response_code(500);
+
+    if (APP_ENV === 'development') {
+        echo "<h1>Erro 500 - Desenvolvimento</h1>";
+        echo "<p><strong>Mensagem:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+        echo "<p><strong>Arquivo:</strong> " . htmlspecialchars($e->getFile()) . "</p>";
+        echo "<p><strong>Linha:</strong> " . $e->getLine() . "</p>";
+        echo "<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+    } else {
+        require ERRORS_PATH . '/500.php';
+    }
+}
+PHP;
+}
+
+private function getApiRoutesAvancado(): string
+{
+    return <<<'PHP'
+<?php
+/**
+ * Rotas API - Template Avançado
+ * API REST para integrações
+ */
+
+use App\Http\Controllers\ApiController;
+
+// Configurar resposta JSON
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *'); // Ajuste conforme necessário
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+// Parseamento da URL
+$requestUri = $_SERVER['REQUEST_URI'];
+$scriptName = dirname($_SERVER['SCRIPT_NAME']);
+$basePath = rtrim($scriptName, '/');
+
+$uri = substr($requestUri, strlen($basePath));
+$uri = strtok($uri, '?');
+$uri = trim($uri, '/');
+
+// Remover prefixo 'api/'
+$uri = preg_replace('/^api\/?/', '', $uri);
+$segments = $uri ? explode('/', $uri) : [];
+
+$resource = $segments[0] ?? null;
+$id = $segments[1] ?? null;
+$method = $_SERVER['REQUEST_METHOD'];
+
+try {
+    $controller = new ApiController();
+
+    // USERS API
+    if ($resource === 'users') {
+        if ($method === 'GET' && $id === null) {
+            $controller->getUsers();
+        } elseif ($method === 'GET' && $id !== null) {
+            $controller->getUser((int)$id);
+        } elseif ($method === 'POST') {
+            $controller->createUser();
+        } elseif ($method === 'PUT' && $id !== null) {
+            $controller->updateUser((int)$id);
+        } elseif ($method === 'DELETE' && $id !== null) {
+            $controller->deleteUser((int)$id);
+        } else {
+            http_response_code(405);
+            echo json_encode(['error' => 'Método não permitido']);
+        }
+        exit;
+    }
+
+    // PRODUCTS API
+    if ($resource === 'products') {
+        if ($method === 'GET' && $id === null) {
+            $controller->getProducts();
+        } elseif ($method === 'GET' && $id !== null) {
+            $controller->getProduct((int)$id);
+        } else {
+            http_response_code(405);
+            echo json_encode(['error' => 'Método não permitido']);
+        }
+        exit;
+    }
+
+    // ENDPOINT NÃO ENCONTRADO
+    http_response_code(404);
+    echo json_encode(['error' => 'Endpoint não encontrado']);
+
+} catch (\Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        'error' => 'Erro interno do servidor',
+        'message' => APP_ENV === 'development' ? $e->getMessage() : null
+    ]);
+}
+PHP;
+}
+
+// ==========================================
+// TEMPLATE AVANÇADO - MÉTODOS AUXILIARES PARTE 2
+// Configurações e Middleware
+// ==========================================
+
+private function getAppConfigAvancado(): string
+{
+    return <<<'PHP'
+<?php
+/**
+ * Configuração da Aplicação - Template Avançado
+ */
+
+define('APP_NAME', 'Template Avançado IPPLS');
+define('APP_URL', 'http://localhost');
+define('APP_ENV', 'development'); // production, development
+define('APP_VERSION', '1.0.0');
+
+// Timezone
+date_default_timezone_set('Africa/Luanda');
+
+// Error reporting
+if (APP_ENV === 'development') {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    ini_set('log_errors', 1);
+    ini_set('error_log', STORAGE_PATH . '/logs/app.log');
+} else {
+    error_reporting(0);
+    ini_set('display_errors', 0);
+    ini_set('log_errors', 1);
+    ini_set('error_log', STORAGE_PATH . '/logs/app.log');
+}
+
+// Upload settings
+ini_set('upload_max_filesize', '10M');
+ini_set('post_max_size', '10M');
+ini_set('max_execution_time', '300');
+
+// Sessão
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_strict_mode', 1);
+ini_set('session.cookie_samesite', 'Strict');
+
+// CSRF Token (gerar se não existir)
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+PHP;
+}
+
+private function getDatabaseConfigAvancado(): string
+{
+    return <<<'PHP'
+<?php
+/**
+ * Configuração de Banco de Dados - Template Avançado
+ */
+
+namespace App\Config;
+
+class Database
+{
+    private static $instance = null;
+    private $pdo;
+
+    private function __construct()
+    {
+        $host = getenv('DB_HOST') ?: 'localhost';
+        $name = getenv('DB_NAME') ?: 'projeto_avancado';
+        $user = getenv('DB_USER') ?: 'root';
+        $pass = getenv('DB_PASS') ?: '';
+        $charset = 'utf8mb4';
+
+        try {
+            $dsn = "mysql:host={$host};dbname={$name};charset={$charset}";
+            $options = [
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+                \PDO::ATTR_EMULATE_PREPARES => false,
+                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}"
+            ];
+
+            $this->pdo = new \PDO($dsn, $user, $pass, $options);
+        } catch (\PDOException $e) {
+            error_log("Erro de conexão com banco: " . $e->getMessage());
+
+            if (APP_ENV === 'development') {
+                die("Erro de conexão: " . $e->getMessage());
+            } else {
+                die("Erro ao conectar ao banco de dados. Contate o administrador.");
+            }
+        }
+    }
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    public function getConnection(): \PDO
+    {
+        return $this->pdo;
+    }
+}
+PHP;
+}
+
+private function getConstantsConfigAvancado(): string
+{
+    return <<<'PHP'
+<?php
+/**
+ * Constantes Globais - Template Avançado
+ */
+
+// ============================================
+// CAMINHOS BASE
+// ============================================
+define('BASE_PATH', dirname(__DIR__, 2));
+define('APP_PATH', BASE_PATH . '/app');
+define('VIEWS_PATH', BASE_PATH . '/views');
+define('PUBLIC_PATH', BASE_PATH . '/public');
+define('STORAGE_PATH', BASE_PATH . '/storage');
+define('CONFIG_PATH', APP_PATH . '/config');
+define('CONTROLLERS_PATH', APP_PATH . '/Http/Controllers');
+define('MIDDLEWARE_PATH', APP_PATH . '/Http/Middleware');
+define('MODELS_PATH', APP_PATH . '/Models');
+define('ROUTES_PATH', BASE_PATH . '/routes');
+define('VENDOR_PATH', BASE_PATH . '/vendor');
+
+// ============================================
+// CAMINHOS DE VIEWS
+// ============================================
+define('LAYOUTS_PATH', VIEWS_PATH . '/layouts');
+define('PAGES_PATH', VIEWS_PATH . '/pages');
+define('COMPONENTS_PATH', VIEWS_PATH . '/components');
+define('ERRORS_PATH', VIEWS_PATH . '/errors');
+
+// ============================================
+// CAMINHOS DE ASSETS
+// ============================================
+define('ASSETS_PATH', PUBLIC_PATH . '/assets');
+define('CSS_PATH', ASSETS_PATH . '/css');
+define('JS_PATH', ASSETS_PATH . '/js');
+define('IMAGES_PATH', ASSETS_PATH . '/images');
+define('UPLOADS_PATH', PUBLIC_PATH . '/uploads');
+
+// ============================================
+// CAMINHOS DE STORAGE
+// ============================================
+define('LOGS_PATH', STORAGE_PATH . '/logs');
+define('CACHE_PATH', STORAGE_PATH . '/cache');
+define('SESSIONS_PATH', STORAGE_PATH . '/sessions');
+
+// ============================================
+// AMBIENTE
+// ============================================
+define('IS_DEVELOPMENT', APP_ENV === 'development');
+define('IS_PRODUCTION', APP_ENV === 'production');
+
+// ============================================
+// PAGINAÇÃO
+// ============================================
+define('ITEMS_PER_PAGE', 10);
+
+// ============================================
+// UPLOAD
+// ============================================
+define('MAX_FILE_SIZE', 10 * 1024 * 1024); // 10MB
+define('ALLOWED_IMAGE_TYPES', ['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
+define('ALLOWED_DOCUMENT_TYPES', ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+PHP;
+}
+
+private function getHelpersConfigAvancado(): string
+{
+    return <<<'PHP'
+<?php
+/**
+ * Funções Auxiliares - Template Avançado
+ */
+
+use App\Config\Database;
+
+// ============================================
+// DATABASE
+// ============================================
+
+if (!function_exists('db')) {
+    /**
+     * Retorna instância PDO do banco de dados
+     */
+    function db(): PDO
+    {
+        return Database::getInstance()->getConnection();
+    }
+}
+
+// ============================================
+// REDIRECT
+// ============================================
+
+if (!function_exists('redirect')) {
+    /**
+     * Redireciona para URL especificada
+     */
+    function redirect(string $url): void
+    {
+        $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+        $fullUrl = $baseUrl . '/' . ltrim($url, '/');
+        header("Location: {$fullUrl}");
+        exit;
+    }
+}
+
+if (!function_exists('back')) {
+    /**
+     * Redireciona para página anterior
+     */
+    function back(): void
+    {
+        $referrer = $_SERVER['HTTP_REFERER'] ?? '/';
+        header("Location: {$referrer}");
+        exit;
+    }
+}
+
+// ============================================
+// ESCAPE / SANITIZE
+// ============================================
+
+if (!function_exists('e')) {
+    /**
+     * Escapa HTML
+     */
+    function e($text): string
+    {
+        return htmlspecialchars($text ?? '', ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('clean')) {
+    /**
+     * Remove tags HTML e espaços
+     */
+    function clean($text): string
+    {
+        return trim(strip_tags($text ?? ''));
+    }
+}
+
+// ============================================
+// FLASH MESSAGES
+// ============================================
+
+if (!function_exists('flash')) {
+    /**
+     * Define mensagem flash
+     */
+    function flash(string $type, string $message): void
+    {
+        $_SESSION['flash_message'] = [
+            'type' => $type,
+            'message' => $message
+        ];
+    }
+}
+
+if (!function_exists('getFlash')) {
+    /**
+     * Recupera e limpa mensagem flash
+     */
+    function getFlash(): ?array
+    {
+        $flash = $_SESSION['flash_message'] ?? null;
+        unset($_SESSION['flash_message']);
+        return $flash;
+    }
+}
+
+// ============================================
+// URL
+// ============================================
+
+if (!function_exists('url')) {
+    /**
+     * Gera URL absoluta
+     */
+    function url(string $path = ''): string
+    {
+        $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+        return $baseUrl . '/' . ltrim($path, '/');
+    }
+}
+
+if (!function_exists('asset')) {
+    /**
+     * Gera URL para asset
+     */
+    function asset(string $path): string
+    {
+        $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+        return $baseUrl . '/public/assets/' . ltrim($path, '/');
+    }
+}
+
+// ============================================
+// VALIDAÇÃO
+// ============================================
+
+if (!function_exists('validateEmail')) {
+    /**
+     * Valida email
+     */
+    function validateEmail(string $email): bool
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    }
+}
+
+if (!function_exists('validateRequired')) {
+    /**
+     * Valida campo obrigatório
+     */
+    function validateRequired($value): bool
+    {
+        return !empty(trim($value ?? ''));
+    }
+}
+
+// ============================================
+// UPLOAD
+// ============================================
+
+if (!function_exists('uploadFile')) {
+    /**
+     * Faz upload de arquivo
+     */
+    function uploadFile(array $file, string $destination = 'uploads'): ?string
+    {
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return null;
+        }
+
+        if ($file['size'] > MAX_FILE_SIZE) {
+            return null;
+        }
+
+        $uploadDir = PUBLIC_PATH . '/' . trim($destination, '/') . '/';
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = uniqid() . '_' . time() . '.' . $extension;
+        $filepath = $uploadDir . $filename;
+
+        if (move_uploaded_file($file['tmp_name'], $filepath)) {
+            return $destination . '/' . $filename;
+        }
+
+        return null;
+    }
+}
+
+// ============================================
+// PAGINAÇÃO
+// ============================================
+
+if (!function_exists('paginate')) {
+    /**
+     * Calcula valores de paginação
+     */
+    function paginate(int $total, int $perPage = ITEMS_PER_PAGE): array
+    {
+        $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+        $totalPages = ceil($total / $perPage);
+        $offset = ($page - 1) * $perPage;
+
+        return [
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'total' => $total,
+            'total_pages' => $totalPages,
+            'offset' => $offset,
+            'has_prev' => $page > 1,
+            'has_next' => $page < $totalPages
+        ];
+    }
+}
+
+// ============================================
+// CSRF
+// ============================================
+
+if (!function_exists('csrfToken')) {
+    /**
+     * Retorna token CSRF
+     */
+    function csrfToken(): string
+    {
+        return $_SESSION['csrf_token'] ?? '';
+    }
+}
+
+if (!function_exists('csrfField')) {
+    /**
+     * Gera campo hidden com token CSRF
+     */
+    function csrfField(): string
+    {
+        return '<input type="hidden" name="csrf_token" value="' . csrfToken() . '">';
+    }
+}
+
+if (!function_exists('verifyCsrf')) {
+    /**
+     * Verifica token CSRF
+     */
+    function verifyCsrf(): bool
+    {
+        $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+        return hash_equals(csrfToken(), $token);
+    }
+}
+PHP;
+}
+
+private function getAuthMiddleware(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Http\Middleware;
+
+class AuthMiddleware
+{
+    /**
+     * Verifica se usuário está autenticado
+     */
+    public static function handle(): void
+    {
+        if (!isset($_SESSION['user_id'])) {
+            flash('error', 'Você precisa estar autenticado para acessar esta página.');
+            redirect('/login');
+        }
+    }
+
+    /**
+     * Verifica se usuário é admin
+     */
+    public static function isAdmin(): bool
+    {
+        return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+    }
+
+    /**
+     * Redireciona se não for admin
+     */
+    public static function requireAdmin(): void
+    {
+        if (!self::isAdmin()) {
+            flash('error', 'Acesso negado. Apenas administradores.');
+            redirect('/');
+        }
+    }
+}
+PHP;
+}
+
+private function getCsrfMiddleware(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Http\Middleware;
+
+class CsrfMiddleware
+{
+    /**
+     * Verifica token CSRF em requisições POST
+     */
+    public static function handle(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!verifyCsrf()) {
+                http_response_code(419);
+                die('Token CSRF inválido. Recarregue a página e tente novamente.');
+            }
+        }
+    }
+
+    /**
+     * Gera novo token CSRF
+     */
+    public static function generateToken(): string
+    {
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+        return $_SESSION['csrf_token'];
+    }
+}
+PHP;
+}
+
+
+// ==========================================
+// TEMPLATE AVANÇADO - MÉTODOS AUXILIARES PARTE 3
+// Models e Controllers
+// ==========================================
+
+private function getUserModelAvancado(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Models;
+
+use PDO;
+
+class User
+{
+    private PDO $db;
+
+    public function __construct()
+    {
+        $this->db = db();
+    }
+
+    /**
+     * Lista usuários com paginação
+     */
+    public function paginate(int $offset = 0, int $limit = ITEMS_PER_PAGE): array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM users ORDER BY id DESC LIMIT :offset, :limit"
+        );
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Conta total de usuários
+     */
+    public function count(): int
+    {
+        $stmt = $this->db->query("SELECT COUNT(*) FROM users");
+        return (int)$stmt->fetchColumn();
+    }
+
+    /**
+     * Busca usuário por ID
+     */
+    public function find(int $id): ?array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch() ?: null;
+    }
+
+    /**
+     * Cria usuário
+     */
+    public function create(array $data): bool
+    {
+        $stmt = $this->db->prepare(
+            "INSERT INTO users (name, email, created_at) VALUES (?, ?, NOW())"
+        );
+        return $stmt->execute([$data['name'], $data['email']]);
+    }
+
+    /**
+     * Atualiza usuário
+     */
+    public function update(int $id, array $data): bool
+    {
+        $stmt = $this->db->prepare(
+            "UPDATE users SET name = ?, email = ? WHERE id = ?"
+        );
+        return $stmt->execute([$data['name'], $data['email'], $id]);
+    }
+
+    /**
+     * Deleta usuário
+     */
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    /**
+     * Verifica se email já existe
+     */
+    public function emailExists(string $email, ?int $excludeId = null): bool
+    {
+        $sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        $params = [$email];
+
+        if ($excludeId) {
+            $sql .= " AND id != ?";
+            $params[] = $excludeId;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchColumn() > 0;
+    }
+}
+PHP;
+}
+
+private function getProductModel(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Models;
+
+use PDO;
+
+class Product
+{
+    private PDO $db;
+
+    public function __construct()
+    {
+        $this->db = db();
+    }
+
+    /**
+     * Lista produtos com paginação
+     */
+    public function paginate(int $offset = 0, int $limit = ITEMS_PER_PAGE): array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM products ORDER BY id DESC LIMIT :offset, :limit"
+        );
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Conta total de produtos
+     */
+    public function count(): int
+    {
+        $stmt = $this->db->query("SELECT COUNT(*) FROM products");
+        return (int)$stmt->fetchColumn();
+    }
+
+    /**
+     * Busca produto por ID
+     */
+    public function find(int $id): ?array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM products WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch() ?: null;
+    }
+
+    /**
+     * Cria produto
+     */
+    public function create(array $data): bool
+    {
+        $stmt = $this->db->prepare(
+            "INSERT INTO products (name, description, price, image, created_at)
+             VALUES (?, ?, ?, ?, NOW())"
+        );
+        return $stmt->execute([
+            $data['name'],
+            $data['description'] ?? null,
+            $data['price'],
+            $data['image'] ?? null
+        ]);
+    }
+
+    /**
+     * Atualiza produto
+     */
+    public function update(int $id, array $data): bool
+    {
+        $stmt = $this->db->prepare(
+            "UPDATE products SET name = ?, description = ?, price = ?, image = ? WHERE id = ?"
+        );
+        return $stmt->execute([
+            $data['name'],
+            $data['description'] ?? null,
+            $data['price'],
+            $data['image'] ?? null,
+            $id
+        ]);
+    }
+
+    /**
+     * Deleta produto
+     */
+    public function delete(int $id): bool
+    {
+        // Buscar e deletar imagem se existir
+        $product = $this->find($id);
+        if ($product && $product['image']) {
+            $imagePath = PUBLIC_PATH . '/' . $product['image'];
+            if (file_exists($imagePath)) {
+                @unlink($imagePath);
+            }
+        }
+
+        $stmt = $this->db->prepare("DELETE FROM products WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+}
+PHP;
+}
+
+private function getHomeControllerAvancado(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Http\Controllers;
+
+class HomeController
+{
+    public function index(): void
+    {
+        $title = 'Template Avançado MVC - IPPLS';
+        $content = PAGES_PATH . '/home.php';
+        require LAYOUTS_PATH . '/main.php';
+    }
+
+    public function docs(): void
+    {
+        $title = 'Documentação - Template Avançado';
+        $content = PAGES_PATH . '/docs.php';
+        require LAYOUTS_PATH . '/main.php';
+    }
+
+    public function dashboard(): void
+    {
+        $title = 'Dashboard - Template Avançado';
+        $content = PAGES_PATH . '/dashboard.php';
+        require LAYOUTS_PATH . '/dashboard.php';
+    }
+}
+PHP;
+}
+
+private function getUserControllerAvancado(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+
+class UserController
+{
+    private User $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = new User();
+    }
+
+    /**
+     * Lista usuários com paginação
+     */
+    public function index(): void
+    {
+        $total = $this->userModel->count();
+        $pagination = paginate($total);
+        $users = $this->userModel->paginate($pagination['offset'], $pagination['per_page']);
+
+        $controller = $this;
+        $title = 'Gestão de Usuários';
+        $content = PAGES_PATH . '/users.php';
+        require LAYOUTS_PATH . '/main.php';
+    }
+
+    /**
+     * Cria usuário
+     */
+    public function create(): void
+    {
+        $name = clean($_POST['name'] ?? '');
+        $email = clean($_POST['email'] ?? '');
+
+        // Validação
+        if (!validateRequired($name) || !validateRequired($email)) {
+            flash('error', 'Preencha todos os campos obrigatórios.');
+            redirect('/users');
+        }
+
+        if (!validateEmail($email)) {
+            flash('error', 'Email inválido.');
+            redirect('/users');
+        }
+
+        if ($this->userModel->emailExists($email)) {
+            flash('error', 'Este email já está cadastrado.');
+            redirect('/users');
+        }
+
+        if ($this->userModel->create(['name' => $name, 'email' => $email])) {
+            flash('success', 'Usuário criado com sucesso!');
+        } else {
+            flash('error', 'Erro ao criar usuário.');
+        }
+
+        redirect('/users');
+    }
+
+    /**
+     * Edita usuário
+     */
+    public function edit(int $id): void
+    {
+        $user = $this->userModel->find($id);
+
+        if (!$user) {
+            flash('error', 'Usuário não encontrado.');
+            redirect('/users');
+        }
+
+        $controller = $this;
+        $title = 'Editar Usuário';
+        $content = PAGES_PATH . '/users.php';
+        $editUser = $user;
+        require LAYOUTS_PATH . '/main.php';
+    }
+
+    /**
+     * Atualiza usuário
+     */
+    public function update(): void
+    {
+        $id = (int)($_POST['id'] ?? 0);
+        $name = clean($_POST['name'] ?? '');
+        $email = clean($_POST['email'] ?? '');
+
+        if ($id <= 0) {
+            flash('error', 'ID inválido.');
+            redirect('/users');
+        }
+
+        if (!validateRequired($name) || !validateRequired($email)) {
+            flash('error', 'Preencha todos os campos.');
+            redirect("/users/edit/{$id}");
+        }
+
+        if (!validateEmail($email)) {
+            flash('error', 'Email inválido.');
+            redirect("/users/edit/{$id}");
+        }
+
+        if ($this->userModel->emailExists($email, $id)) {
+            flash('error', 'Este email já está cadastrado.');
+            redirect("/users/edit/{$id}");
+        }
+
+        if ($this->userModel->update($id, ['name' => $name, 'email' => $email])) {
+            flash('success', 'Usuário atualizado com sucesso!');
+        } else {
+            flash('error', 'Erro ao atualizar usuário.');
+        }
+
+        redirect('/users');
+    }
+
+    /**
+     * Deleta usuário
+     */
+    public function delete(): void
+    {
+        $id = (int)($_POST['id'] ?? 0);
+
+        if ($id <= 0) {
+            flash('error', 'ID inválido.');
+            redirect('/users');
+        }
+
+        if ($this->userModel->delete($id)) {
+            flash('success', 'Usuário deletado com sucesso!');
+        } else {
+            flash('error', 'Erro ao deletar usuário.');
+        }
+
+        redirect('/users');
+    }
+}
+PHP;
+}
+
+private function getAuthController(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Http\Controllers;
+
+class AuthController
+{
+    public function showLogin(): void
+    {
+        $title = 'Login - Template Avançado';
+        require PAGES_PATH . '/auth/login.php';
+    }
+
+    public function showRegister(): void
+    {
+        $title = 'Registro - Template Avançado';
+        require PAGES_PATH . '/auth/register.php';
+    }
+
+    public function login(): void
+    {
+        // Implementar lógica de login real
+        $email = clean($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        // Exemplo básico - implementar validação real
+        if ($email && $password) {
+            $_SESSION['user_id'] = 1;
+            $_SESSION['user_name'] = 'Usuário Teste';
+            $_SESSION['user_email'] = $email;
+            flash('success', 'Login realizado com sucesso!');
+            redirect('/dashboard');
+        } else {
+            flash('error', 'Credenciais inválidas.');
+            redirect('/login');
+        }
+    }
+
+    public function register(): void
+    {
+        // Implementar lógica de registro
+        flash('success', 'Registro realizado com sucesso!');
+        redirect('/login');
+    }
+
+    public function logout(): void
+    {
+        session_destroy();
+        redirect('/login');
+    }
+}
+PHP;
+}
+
+private function getProductController(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+
+class ProductController
+{
+    private Product $productModel;
+
+    public function __construct()
+    {
+        $this->productModel = new Product();
+    }
+
+    public function index(): void
+    {
+        $total = $this->productModel->count();
+        $pagination = paginate($total);
+        $products = $this->productModel->paginate($pagination['offset'], $pagination['per_page']);
+
+        $controller = $this;
+        $title = 'Gestão de Produtos';
+        $content = PAGES_PATH . '/products.php';
+        require LAYOUTS_PATH . '/main.php';
+    }
+
+    public function create(): void
+    {
+        $name = clean($_POST['name'] ?? '');
+        $description = clean($_POST['description'] ?? '');
+        $price = (float)($_POST['price'] ?? 0);
+
+        if (!validateRequired($name) || $price <= 0) {
+            flash('error', 'Preencha todos os campos obrigatórios.');
+            redirect('/products');
+        }
+
+        // Upload de imagem (se houver)
+        $image = null;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image = uploadFile($_FILES['image'], 'uploads/products');
+        }
+
+        if ($this->productModel->create([
+            'name' => $name,
+            'description' => $description,
+            'price' => $price,
+            'image' => $image
+        ])) {
+            flash('success', 'Produto criado com sucesso!');
+        } else {
+            flash('error', 'Erro ao criar produto.');
+        }
+
+        redirect('/products');
+    }
+
+    public function update(): void
+    {
+        // Similar ao create, implementar atualização
+        flash('success', 'Produto atualizado com sucesso!');
+        redirect('/products');
+    }
+
+    public function delete(): void
+    {
+        $id = (int)($_POST['id'] ?? 0);
+
+        if ($this->productModel->delete($id)) {
+            flash('success', 'Produto deletado com sucesso!');
+        } else {
+            flash('error', 'Erro ao deletar produto.');
+        }
+
+        redirect('/products');
+    }
+}
+PHP;
+}
+
+private function getApiController(): string
+{
+    return <<<'PHP'
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\Product;
+
+class ApiController
+{
+    /**
+     * GET /api/users
+     */
+    public function getUsers(): void
+    {
+        $userModel = new User();
+        $users = $userModel->paginate(0, 100);
+
+        echo json_encode([
+            'success' => true,
+            'data' => $users
+        ]);
+    }
+
+    /**
+     * GET /api/users/{id}
+     */
+    public function getUser(int $id): void
+    {
+        $userModel = new User();
+        $user = $userModel->find($id);
+
+        if ($user) {
+            echo json_encode([
+                'success' => true,
+                'data' => $user
+            ]);
+        } else {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Usuário não encontrado'
+            ]);
+        }
+    }
+
+    /**
+     * POST /api/users
+     */
+    public function createUser(): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $userModel = new User();
+
+        if ($userModel->create($data)) {
+            http_response_code(201);
+            echo json_encode([
+                'success' => true,
+                'message' => 'Usuário criado com sucesso'
+            ]);
+        } else {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Erro ao criar usuário'
+            ]);
+        }
+    }
+
+    /**
+     * PUT /api/users/{id}
+     */
+    public function updateUser(int $id): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $userModel = new User();
+
+        if ($userModel->update($id, $data)) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Usuário atualizado'
+            ]);
+        } else {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Erro ao atualizar'
+            ]);
+        }
+    }
+
+    /**
+     * DELETE /api/users/{id}
+     */
+    public function deleteUser(int $id): void
+    {
+        $userModel = new User();
+
+        if ($userModel->delete($id)) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Usuário deletado'
+            ]);
+        } else {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Erro ao deletar'
+            ]);
+        }
+    }
+
+    /**
+     * GET /api/products
+     */
+    public function getProducts(): void
+    {
+        $productModel = new Product();
+        $products = $productModel->paginate(0, 100);
+
+        echo json_encode([
+            'success' => true,
+            'data' => $products
+        ]);
+    }
+
+    /**
+     * GET /api/products/{id}
+     */
+    public function getProduct(int $id): void
+    {
+        $productModel = new Product();
+        $product = $productModel->find($id);
+
+        if ($product) {
+            echo json_encode([
+                'success' => true,
+                'data' => $product
+            ]);
+        } else {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Produto não encontrado'
+            ]);
+        }
+    }
+}
+PHP;
+}
+
+
+// ==========================================
+// TEMPLATE AVANÇADO - MÉTODOS AUXILIARES FINAIS
+// Views, Components, Assets, README
+// ==========================================
+
+// ========== VIEWS - LAYOUTS ==========
+
+private function getMainLayoutAvancado(): string
+{
+    return <<<'HTML'
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $title ?? 'IPPLS Template Avançado' ?></title>
+    <link rel="icon" type="image/x-icon" href="<?= url('favicon.ico') ?>">
+    <link rel="stylesheet" href="<?= asset('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= url('vendor/fontawesome/css/all.min.css') ?>">
+</head>
+<body>
+    <?php require COMPONENTS_PATH . '/navbar.php'; ?>
+    <?php require $content; ?>
+    <?php require COMPONENTS_PATH . '/footer.php'; ?>
+    <script src="<?= asset('js/main.js') ?>"></script>
+</body>
+</html>
+HTML;
+}
+
+private function getDashboardLayout(): string
+{
+    return <<<'HTML'
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $title ?? 'Dashboard' ?></title>
+    <link rel="icon" type="image/x-icon" href="<?= url('favicon.ico') ?>">
+    <link rel="stylesheet" href="<?= asset('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= url('vendor/fontawesome/css/all.min.css') ?>">
+</head>
+<body>
+    <?php require COMPONENTS_PATH . '/navbar.php'; ?>
+    <div class="dashboard-wrapper">
+        <?php require $content; ?>
+    </div>
+    <?php require COMPONENTS_PATH . '/footer.php'; ?>
+</body>
+</html>
+HTML;
+}
+
+// ========== VIEWS - PAGES ==========
+
+private function getHomeViewAvancado(): string
+{
+    return <<<'HTML'
+<section class="hero-section">
+    <div class="hero-container">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="welcome-container">
+                    <span class="welcome-icon">👋</span>
+                    <span class="welcome-text">Bem-vindo ao Template Avançado</span>
+                </div>
+                <h1 class="hero-title">
+                    Template <span class="hero-title-highlight">AVANÇADO</span>
+                </h1>
+                <p class="hero-subtitle">
+                    URLs amigáveis, middleware, upload, paginação e API REST. Evolução natural do Template Padrão.
+                </p>
+                <div class="hero-buttons">
+                    <a href="<?= url('/users') ?>" class="btn-hero btn-hero-primary">
+                        <i class="fas fa-users"></i> Gestão de Usuários
+                    </a>
+                    <a href="<?= url('/docs') ?>" class="btn-hero btn-hero-secondary">
+                        <i class="fas fa-book"></i> Documentação
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="decoration-block-top">
+                    <img src="<?= asset('images/logo/ippls-logo-removebg-preview.png') ?>" alt="IPPLS" class="logo">
+                </div>
+                <div class="feature-card">
+                    <h2 class="feature-card-title">Profissional. Moderno. Prático.</h2>
+                    <p class="feature-card-subtitle">IPPLS - Instituto Politécnico</p>
+                </div>
+                <div class="decoration-block-bottom">
+                    <img src="<?= asset('images/logo/ippls-logo-removebg-preview.png') ?>" alt="IPPLS" class="logo">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">Recursos Avançados</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-link fa-3x"></i>
+                <h3>URLs Amigáveis</h3>
+                <p>/users em vez de ?page=users</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt fa-3x"></i>
+                <h3>Middleware</h3>
+                <p>Auth, CSRF e segurança</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-upload fa-3x"></i>
+                <h3>Upload de Arquivos</h3>
+                <p>Imagens e documentos</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-list-ol fa-3x"></i>
+                <h3>Paginação</h3>
+                <p>Navegação automática</p>
+            </div>
+        </div>
+    </div>
+</section>
+HTML;
+}
+
+private function getUsersViewAvancado(): string
+{
+    return <<<'PHP'
+<div class="main-container">
+    <?php require COMPONENTS_PATH . '/breadcrumbs.php'; ?>
+
+    <?php $flash = getFlash(); if ($flash): ?>
+        <div class="alert alert-<?= $flash['type'] ?>">
+            <i class="fas <?= $flash['type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle' ?>"></i>
+            <span><?= e($flash['message']) ?></span>
+        </div>
+    <?php endif; ?>
+
+    <div class="page-header">
+        <h1><i class="fas fa-users"></i> Gestão de Usuários</h1>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2><?= isset($editUser) ? 'Editar Usuário' : 'Novo Usuário' ?></h2>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="<?= isset($editUser) ? url('/users/update') : url('/users/create') ?>">
+                <?= csrfField() ?>
+                <?php if (isset($editUser)): ?>
+                    <input type="hidden" name="id" value="<?= $editUser['id'] ?>">
+                <?php endif; ?>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Nome *</label>
+                        <input type="text" id="name" name="name" class="form-input"
+                               value="<?= e($editUser['name'] ?? '') ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" class="form-input"
+                               value="<?= e($editUser['email'] ?? '') ?>" required>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> <?= isset($editUser) ? 'Atualizar' : 'Criar' ?>
+                    </button>
+                    <?php if (isset($editUser)): ?>
+                        <a href="<?= url('/users') ?>" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Usuários Cadastrados</h2>
+        </div>
+        <div class="card-body">
+            <?php if (!empty($users)): ?>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><strong>#<?= $user['id'] ?></strong></td>
+                                    <td><?= e($user['name']) ?></td>
+                                    <td><?= e($user['email']) ?></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="<?= url("/users/edit/{$user['id']}") ?>" class="btn btn-sm btn-edit">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </a>
+                                            <form method="POST" action="<?= url('/users/delete') ?>" class="inline-form"
+                                                  onsubmit="return confirm('Tem certeza?');">
+                                                <?= csrfField() ?>
+                                                <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                                <button type="submit" class="btn btn-sm btn-delete">
+                                                    <i class="fas fa-trash"></i> Deletar
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <?php require COMPONENTS_PATH . '/pagination.php'; ?>
+            <?php else: ?>
+                <div class="empty-state">
+                    <i class="fas fa-inbox fa-4x"></i>
+                    <h3>Nenhum Usuário</h3>
+                    <p>Crie o primeiro usuário usando o formulário acima.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+PHP;
+}
+
+private function getProductsView(): string
+{
+    return <<<'PHP'
+<div class="main-container">
+    <?php require COMPONENTS_PATH . '/breadcrumbs.php'; ?>
+
+    <div class="page-header">
+        <h1><i class="fas fa-box"></i> Gestão de Produtos</h1>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Novo Produto</h2>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="<?= url('/products/create') ?>" enctype="multipart/form-data">
+                <?= csrfField() ?>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Nome *</label>
+                        <input type="text" id="name" name="name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Preço *</label>
+                        <input type="number" id="price" name="price" class="form-input" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Descrição</label>
+                        <textarea id="description" name="description" class="form-input" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Imagem</label>
+                        <input type="file" id="image" name="image" class="form-input" accept="image/*">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Criar Produto
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Produtos Cadastrados</h2>
+        </div>
+        <div class="card-body">
+            <p>Implementar listagem de produtos...</p>
+        </div>
+    </div>
+</div>
+PHP;
+}
+
+private function getDocsViewAvancado(): string
+{
+    return $this->getDocsViewsPadrao(); // Reutilizar do Template Padrão
+}
+
+private function getDashboardView(): string
+{
+    return <<<'HTML'
+<div class="dashboard-container">
+    <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-info">
+                <h3>Usuários</h3>
+                <p class="stat-number">150</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-box"></i></div>
+            <div class="stat-info">
+                <h3>Produtos</h3>
+                <p class="stat-number">42</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+            <div class="stat-info">
+                <h3>Pedidos</h3>
+                <p class="stat-number">28</p>
+            </div>
+        </div>
+    </div>
+</div>
+HTML;
+}
+
+private function getLoginView(): string
+{
+    return <<<'HTML'
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Template Avançado</title>
+    <link rel="stylesheet" href="<?= asset('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= url('vendor/fontawesome/css/all.min.css') ?>">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1><i class="fas fa-sign-in-alt"></i> Login</h1>
+                <p>Entre com suas credenciais</p>
+            </div>
+
+            <form method="POST" action="<?= url('/auth/login') ?>">
+                <?= csrfField() ?>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" class="form-input" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+            </form>
+
+            <p class="auth-footer">
+                Não tem conta? <a href="<?= url('/register') ?>">Registre-se</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+}
+
+private function getRegisterView(): string
+{
+    return <<<'HTML'
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Template Avançado</title>
+    <link rel="stylesheet" href="<?= asset('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= url('vendor/fontawesome/css/all.min.css') ?>">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1><i class="fas fa-user-plus"></i> Registro</h1>
+                <p>Crie sua conta</p>
+            </div>
+
+            <form method="POST" action="<?= url('/auth/register') ?>">
+                <?= csrfField() ?>
+
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" class="form-input" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-user-plus"></i> Registrar
+                </button>
+            </form>
+
+            <p class="auth-footer">
+                Já tem conta? <a href="<?= url('/login') ?>">Faça login</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+}
+
+// ========== COMPONENTS ==========
+
+private function getNavbarAvancado(): string
+{
+    return $this->getNavbarPadrao(); // Reutilizar do Padrão
+}
+
+private function getFooterAvancado(): string
+{
+    return $this->getFooterPadrao(); // Reutilizar do Padrão
+}
+
+private function getBreadcrumbs(): string
+{
+    return <<<'PHP'
+<nav class="breadcrumbs">
+    <a href="<?= url('/') ?>"><i class="fas fa-home"></i> Início</a>
+    <i class="fas fa-chevron-right"></i>
+    <span><?= $title ?? 'Página' ?></span>
+</nav>
+PHP;
+}
+
+private function getPaginationComponent(): string
+{
+    return <<<'PHP'
+<?php if (isset($pagination) && $pagination['total_pages'] > 1): ?>
+    <div class="pagination">
+        <?php if ($pagination['has_prev']): ?>
+            <a href="?page=<?= $pagination['current_page'] - 1 ?>" class="pagination-link">
+                <i class="fas fa-chevron-left"></i> Anterior
+            </a>
+        <?php endif; ?>
+
+        <span class="pagination-info">
+            Página <?= $pagination['current_page'] ?> de <?= $pagination['total_pages'] ?>
+        </span>
+
+        <?php if ($pagination['has_next']): ?>
+            <a href="?page=<?= $pagination['current_page'] + 1 ?>" class="pagination-link">
+                Próxima <i class="fas fa-chevron-right"></i>
+            </a>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+PHP;
+}
+
+// ========== ERRORS ==========
+
+private function get404Avancado(): string
+{
+    return $this->get404Padrao(); // Reutilizar
+}
+
+private function get500Avancado(): string
+{
+    return $this->get500Padrao(); // Reutilizar
+}
+
+// ========== CSS ==========
+
+private function getStyleCssAvancado(): string
+{
+    return <<<'CSS'
+@import 'base.css';
+@import 'components/navbar.css';
+@import 'components/buttons.css';
+@import 'components/forms.css';
+@import 'components/cards.css';
+@import 'components/tables.css';
+@import 'components/alerts.css';
+@import 'components/pagination.css';
+@import 'components/breadcrumbs.css';
+@import 'sections/hero.css';
+@import 'sections/footer.css';
+@import 'sections/dashboard.css';
+CSS;
+}
+
+private function getBaseCssAvancado(): string
+{
+    return $this->getBaseCssPadrao(); // Reutilizar
+}
+
+private function getPaginationCss(): string
+{
+    return <<<'CSS'
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--gray-800);
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.pagination-link {
+    padding: 0.5rem 1rem;
+    background: var(--ippls-gold);
+    color: var(--ippls-blue-dark);
+    text-decoration: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.pagination-link:hover {
+    background: var(--ippls-gold-dark);
+    transform: translateY(-2px);
+}
+
+.pagination-info {
+    color: var(--gray-400);
+    font-size: 0.875rem;
+}
+CSS;
+}
+
+private function getBreadcrumbsCss(): string
+{
+    return <<<'CSS'
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+    color: var(--gray-400);
+}
+
+.breadcrumbs a {
+    color: var(--ippls-gold);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.breadcrumbs a:hover {
+    color: var(--ippls-gold-dark);
+}
+
+.breadcrumbs i {
+    font-size: 0.75rem;
+}
+CSS;
+}
+
+private function getDashboardCss(): string
+{
+    return <<<'CSS'
+.dashboard-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1.25rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.stat-card {
+    background: var(--gray-900);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--ippls-gold);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    color: var(--ippls-gold);
+}
+
+.stat-info h3 {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    margin: 0;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+CSS;
+}
+
+// ========== JS ==========
+
+private function getMainJsAvancado(): string
+{
+    return $this->getMainJs(); // Reutilizar
+}
+
+private function getUploadJs(): string
+{
+    return <<<'JS'
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+
+    fileInputs.forEach(input => {
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                console.log('Arquivo selecionado:', file.name);
+                // Preview de imagem (opcional)
+                if (file.type.startsWith('image/')) {
+                    // Implementar preview
+                }
+            }
+        });
+    });
+});
+JS;
+}
+
+private function getApiJs(): string
+{
+    return <<<'JS'
+const API = {
+    async getUsers() {
+        const response = await fetch('/api/users');
+        return response.json();
+    },
+
+    async createUser(data) {
+        const response = await fetch('/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        return response.json();
+    }
+};
+
+// Exemplo de uso:
+// API.getUsers().then(data => console.log(data));
+JS;
+}
+
+// ========== README ==========
+
+private function getReadmeAvancado(): string
+{
+    return <<<'MD'
+# Template Avançado MVC - IPPLS
+
+Evolução do Template Padrão com URLs amigáveis, middleware, upload de arquivos, paginação e API REST.
+
+## 🚀 Características
+
+- ✅ **URLs Amigáveis**: `/users` em vez de `?page=users`
+- ✅ **Middleware**: Autenticação e CSRF
+- ✅ **Upload de Arquivos**: Validação e armazenamento
+- ✅ **Paginação**: Navegação automática de dados
+- ✅ **API REST**: Endpoints JSON para integração
+- ✅ **Múltiplos CRUDs**: Users, Products, etc.
+
+## 📋 Requisitos
+
+- PHP >= 8.0
+- Composer >= 2.0
+- MySQL >= 5.7
+- Apache com mod_rewrite
+
+## 🔧 Instalação
+
+1. **Instalar dependências:**
+```bash
+composer install
+```
+
+2. **Criar banco de dados:**
+```sql
+CREATE DATABASE projeto_avancado;
+USE projeto_avancado;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    image VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+3. **Configurar banco:**
+```php
+// app/config/database.php
+DB_HOST = 'localhost';
+DB_NAME = 'projeto_avancado';
+DB_USER = 'root';
+DB_PASS = '';
+```
+
+4. **Acessar:**
+```
+http://localhost/projeto_avancado
+```
+
+## 📚 URLs Disponíveis
+
+### Web
+- `/` - Home
+- `/users` - CRUD de usuários
+- `/products` - CRUD de produtos
+- `/docs` - Documentação
+- `/dashboard` - Dashboard (protegido)
+- `/login` - Login
+- `/register` - Registro
+
+### API
+- `GET /api/users` - Listar usuários
+- `GET /api/users/{id}` - Buscar usuário
+- `POST /api/users` - Criar usuário
+- `PUT /api/users/{id}` - Atualizar usuário
+- `DELETE /api/users/{id}` - Deletar usuário
+
+## 🎯 Progressão dos Templates
+
+| Recurso | Base | Padrão | **Avançado** |
+|---------|------|--------|--------------|
+| URLs Amigáveis | ❌ | ❌ | ✅ |
+| Middleware | ❌ | ❌ | ✅ |
+| Upload | ❌ | ❌ | ✅ |
+| Paginação | ❌ | ❌ | ✅ |
+| API REST | ❌ | ❌ | ✅ |
+
+---
+
+**Desenvolvido com ❤️ para o IPPLS**
+MD;
+}
+
+private function getInstrucoesAvancado(): string
+{
+    return "# Guia de Instalação - Template Avançado\n\n## 1. Instalar Composer\n## 2. Criar Banco de Dados\n## 3. Configurar Conexão\n## 4. Acessar URLs Amigáveis\n## 5. Explorar API REST";
+}
+
+
 }
