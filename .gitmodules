@@ -1,0 +1,9 @@
+[submodule "templates/template-padrao"]
+	path = templates/template-padrao
+	url = https://github.com/ippls/template-padrao.git
+[submodule "templates/template-base"]
+	path = templates/template-base
+	url = https://github.com/ippls/template-base.git
+[submodule "templates/template-avancado"]
+	path = templates/template-avancado
+	url = https://github.com/ippls/template-avancado.git
