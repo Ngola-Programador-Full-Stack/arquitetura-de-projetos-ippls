@@ -1593,7 +1593,7 @@ body {
     font-weight: 600;
     animation: slideDown 0.3s ease;
     border-left: 4px solid;
-    position: relative;
+    position: absolute;
     z-index: 1000;
 }
 
@@ -2958,7 +2958,7 @@ CSS;
     font-weight: 600;
     animation: slideDown 0.3s ease;
     border-left: 4px solid;
-    position: relative;
+    position: absolute;
     z-index: 1000;
 }
 
