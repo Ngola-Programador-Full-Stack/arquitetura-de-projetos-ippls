@@ -26,7 +26,7 @@ class TemplateArquiteturaSeeder extends Seeder
                 'descricao_completa' => 'O Template Base oferece uma introdução prática ao padrão MVC (Model-View-Controller), ideal para estudantes que estão começando no desenvolvimento web. Com uma estrutura enxuta e direta, permite foco no aprendizado dos conceitos fundamentais sem complexidade desnecessária.',
 
                 'estrutura_diretorios' => [
-                    'projeto_base/' => [
+                    'template_base/' => [
                         'index.php',
                         'config/' => ['database.php'],
                         'models/' => ['User.php'],
@@ -47,16 +47,16 @@ class TemplateArquiteturaSeeder extends Seeder
                 ],
 
                 'arquivos_base' => [
-                    ['caminho' => 'projeto_base/index.php', 'template' => $this->getIndexBase()],
-                    ['caminho' => 'projeto_base/config/database.php', 'template' => $this->getDatabaseConfig()],
-                    ['caminho' => 'projeto_base/models/User.php', 'template' => $this->getUserModel()],
-                    ['caminho' => 'projeto_base/controllers/HomeController.php', 'template' => $this->getHomeController()],
-                    ['caminho' => 'projeto_base/views/pages/home.php', 'template' => $this->getHomeView()],
-                    ['caminho' => 'projeto_base/assets/images/logo/ippls-logo-removebg-preview.png', 'template' => $this->getLogoPlaceholder()],
-                    ['caminho' => 'projeto_base/favicon.ico', 'template' => $this->getFaviconPlaceholder()],
-                    ['caminho' => 'projeto_base/assets/css/style.css', 'template' => $this->getStyleCss()],
-                    ['caminho' => 'projeto_base/assets/js/main.js', 'template' => $this->getMainJs()],
-                    ['caminho' => 'projeto_base/README.md', 'template' => $this->getReadmeBase()]
+                    ['caminho' => 'template_base/index.php', 'template' => $this->getIndexBase()],
+                    ['caminho' => 'template_base/config/database.php', 'template' => $this->getDatabaseConfig()],
+                    ['caminho' => 'template_base/models/User.php', 'template' => $this->getUserModel()],
+                    ['caminho' => 'template_base/controllers/HomeController.php', 'template' => $this->getHomeController()],
+                    ['caminho' => 'template_base/views/pages/home.php', 'template' => $this->getHomeView()],
+                    ['caminho' => 'template_base/assets/images/logo/ippls-logo-removebg-preview.png', 'template' => $this->getLogoPlaceholder()],
+                    ['caminho' => 'template_base/favicon.ico', 'template' => $this->getFaviconPlaceholder()],
+                    ['caminho' => 'template_base/assets/css/style.css', 'template' => $this->getStyleCss()],
+                    ['caminho' => 'template_base/assets/js/main.js', 'template' => $this->getMainJs()],
+                    ['caminho' => 'template_base/README.md', 'template' => $this->getReadmeBase()]
                 ],
 
                 'requisitos' => [
@@ -107,7 +107,7 @@ class TemplateArquiteturaSeeder extends Seeder
                 'descricao_completa' => 'O Template Padrão introduz conceitos profissionais mantendo a simplicidade do Base. Adiciona Composer para gerenciamento de dependências, autoloading PSR-4 para carregamento automático de classes, sistema de rotas centralizado e organização em app/Http/ seguindo convenções do mercado.',
 
                 'estrutura_diretorios' => [
-                    'projeto_padrao/' => [
+                    'template_padrao/' => [
                         'index.php',
                         'app/' => [
                             'config/' => ['database.php', 'app.php', 'constants.php' ,'helpers.php'],
@@ -156,62 +156,62 @@ class TemplateArquiteturaSeeder extends Seeder
                 ],
 
                 'arquivos_base' => [
-                    ['caminho' => 'projeto_padrao/index.php', 'template' => $this->getIndexPadrao()],
-                    ['caminho' => 'projeto_padrao/composer.json', 'template' => $this->getComposerJsonPadrao()],
-                    ['caminho' => 'projeto_padrao/.htaccess', 'template' => $this->getHtaccessPadrao()],
-                    ['caminho' => 'projeto_padrao/routes/web.php', 'template' => $this->getWebRoutesPadrao()],
-                    ['caminho' => 'projeto_padrao/vendor/fontawesome/css/all.min.css', 'template' => $this->getAllMinCssFA()],
-                    ['caminho' => 'projeto_padrao/vendor/fontawesome/webfonts/fa-brands-400.woff2', 'template' => $this->getFaBrands400Woff2()],
-                    ['caminho' => 'projeto_padrao/vendor/fontawesome/webfonts/fa-regular-400.woff2', 'template' => $this->getFaRegular400Woff2()],
-                    ['caminho' => 'projeto_padrao/vendor/fontawesome/webfonts/fa-solid-900.woff2', 'template' => $this->getFaSolid400Woff2()],
-                    ['caminho' => 'projeto_padrao/app/config/database.php', 'template' => $this->getDatabaseConfigPadrao()],
-                    ['caminho' => 'projeto_padrao/app/config/constants.php', 'template' => $this->getConstantsConfig()],
-                    ['caminho' => 'projeto_padrao/app/config/app.php', 'template' => $this->getAppConfig()],
-                    ['caminho' => 'projeto_padrao/app/config/helpers.php', 'template' => $this->getHelpersConfig()],
-                    ['caminho' => 'projeto_padrao/app/Models/User.php', 'template' => $this->getUserModelPadrao()],
-                    ['caminho' => 'projeto_padrao/app/Http/Controllers/HomeController.php', 'template' => $this->getHomeControllerPadrao()],
-                    ['caminho' => 'projeto_padrao/app/Http/Controllers/UserController.php', 'template' => $this->getUserControllerPadrao()],
-                    ['caminho' => 'projeto_padrao/views/components/footer.php', 'template' => $this->getFooterPadrao()],
-                    ['caminho' => 'projeto_padrao/views/components/navbar.php', 'template' => $this->getNavbarPadrao()],
-                    ['caminho' => 'projeto_padrao/views/errors/404.php', 'template' => $this->get404Padrao()],
-                    ['caminho' => 'projeto_padrao/views/errors/500.php', 'template' => $this->get500Padrao()],
-                    ['caminho' => 'projeto_padrao/views/layouts/main.php', 'template' => $this->getMainLayout()],
-                    ['caminho' => 'projeto_padrao/views/pages/home.php', 'template' => $this->getHomeViewPadrao()],
-                    ['caminho' => 'projeto_padrao/views/pages/users.php', 'template' => $this->getUsersViewPadrao()],
-                    ['caminho' => 'projeto_padrao/views/pages/docs.php', 'template' => $this->getDocsViewsPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/style.css', 'template' => $this->getStyleCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/base.css', 'template' => $this->getBaseCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/sections/footer.css', 'template' => $this->getFooterCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/sections/hero.css', 'template' => $this->getHeroCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/sections/skills.css', 'template' => $this->getSkillsCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/components/alerts.css', 'template' => $this->getAlertsCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/components/buttons.css', 'template' => $this->getButtonsCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/components/cards.css', 'template' => $this->getCardsCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/components/errors.css', 'template' => $this->getErrorsCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/components/forms.css', 'template' => $this->getFormsCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/components/navbar.css', 'template' => $this->getNavbarCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/components/tables.css', 'template' => $this->getTablesCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/css/components/docs.css', 'template' => $this->getDocsCssPadrao()],
-                    ['caminho' => 'projeto_padrao/assets/js/main.js', 'template' => $this->getMainJs()],
-                    ['caminho' => 'projeto_padrao/assets/js/components/navbar.js', 'template' => $this->getNavbarJs()],
-                    ['caminho' => 'projeto_padrao/assets/js/components/backToTop.js', 'template' => $this->getBackToTopJs()],
-                    ['caminho' => 'projeto_padrao/assets/js/components/docs.js', 'template' => $this->getDocsJs()],
-                    ['caminho' => 'projeto_padrao/assets/images/logo/ippls-logo-removebg-preview.png', 'template' => $this->getLogoPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/logo/composer.svg', 'template' => $this->getComposerPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/logo/php.svg', 'template' => $this->getPhpPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/logo/mysql.svg', 'template' => $this->getMySqlPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/logo/license.svg', 'template' => $this->getLicensePlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/apache.svg', 'template' => $this->getApachePlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/composer.svg', 'template' => $this->getComposerPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/css3.svg', 'template' => $this->getCss3Placeholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/git.svg', 'template' => $this->getGitPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/html5.svg', 'template' => $this->getHtml5Placeholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/javascript.svg', 'template' => $this->getJavascriptPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/mysql.svg', 'template' => $this->getMySqlPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/php.svg', 'template' => $this->getPhpPlaceholder()],
-                    ['caminho' => 'projeto_padrao/assets/images/skills/xampp.svg', 'template' => $this->getXamppPlaceholder()],
-                    ['caminho' => 'projeto_padrao/favicon.ico', 'template' => $this->getFaviconPlaceholder()],
-                    ['caminho' => 'projeto_padrao/README.md', 'template' => $this->getReadmePadrao()]
+                    ['caminho' => 'template_padrao/index.php', 'template' => $this->getIndexPadrao()],
+                    ['caminho' => 'template_padrao/composer.json', 'template' => $this->getComposerJsonPadrao()],
+                    ['caminho' => 'template_padrao/.htaccess', 'template' => $this->getHtaccessPadrao()],
+                    ['caminho' => 'template_padrao/routes/web.php', 'template' => $this->getWebRoutesPadrao()],
+                    ['caminho' => 'template_padrao/vendor/fontawesome/css/all.min.css', 'template' => $this->getAllMinCssFA()],
+                    ['caminho' => 'template_padrao/vendor/fontawesome/webfonts/fa-brands-400.woff2', 'template' => $this->getFaBrands400Woff2()],
+                    ['caminho' => 'template_padrao/vendor/fontawesome/webfonts/fa-regular-400.woff2', 'template' => $this->getFaRegular400Woff2()],
+                    ['caminho' => 'template_padrao/vendor/fontawesome/webfonts/fa-solid-900.woff2', 'template' => $this->getFaSolid400Woff2()],
+                    ['caminho' => 'template_padrao/app/config/database.php', 'template' => $this->getDatabaseConfigPadrao()],
+                    ['caminho' => 'template_padrao/app/config/constants.php', 'template' => $this->getConstantsConfig()],
+                    ['caminho' => 'template_padrao/app/config/app.php', 'template' => $this->getAppConfig()],
+                    ['caminho' => 'template_padrao/app/config/helpers.php', 'template' => $this->getHelpersConfig()],
+                    ['caminho' => 'template_padrao/app/Models/User.php', 'template' => $this->getUserModelPadrao()],
+                    ['caminho' => 'template_padrao/app/Http/Controllers/HomeController.php', 'template' => $this->getHomeControllerPadrao()],
+                    ['caminho' => 'template_padrao/app/Http/Controllers/UserController.php', 'template' => $this->getUserControllerPadrao()],
+                    ['caminho' => 'template_padrao/views/components/footer.php', 'template' => $this->getFooterPadrao()],
+                    ['caminho' => 'template_padrao/views/components/navbar.php', 'template' => $this->getNavbarPadrao()],
+                    ['caminho' => 'template_padrao/views/errors/404.php', 'template' => $this->get404Padrao()],
+                    ['caminho' => 'template_padrao/views/errors/500.php', 'template' => $this->get500Padrao()],
+                    ['caminho' => 'template_padrao/views/layouts/main.php', 'template' => $this->getMainLayout()],
+                    ['caminho' => 'template_padrao/views/pages/home.php', 'template' => $this->getHomeViewPadrao()],
+                    ['caminho' => 'template_padrao/views/pages/users.php', 'template' => $this->getUsersViewPadrao()],
+                    ['caminho' => 'template_padrao/views/pages/docs.php', 'template' => $this->getDocsViewsPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/style.css', 'template' => $this->getStyleCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/base.css', 'template' => $this->getBaseCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/sections/footer.css', 'template' => $this->getFooterCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/sections/hero.css', 'template' => $this->getHeroCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/sections/skills.css', 'template' => $this->getSkillsCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/components/alerts.css', 'template' => $this->getAlertsCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/components/buttons.css', 'template' => $this->getButtonsCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/components/cards.css', 'template' => $this->getCardsCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/components/errors.css', 'template' => $this->getErrorsCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/components/forms.css', 'template' => $this->getFormsCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/components/navbar.css', 'template' => $this->getNavbarCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/components/tables.css', 'template' => $this->getTablesCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/css/components/docs.css', 'template' => $this->getDocsCssPadrao()],
+                    ['caminho' => 'template_padrao/assets/js/main.js', 'template' => $this->getMainJs()],
+                    ['caminho' => 'template_padrao/assets/js/components/navbar.js', 'template' => $this->getNavbarJs()],
+                    ['caminho' => 'template_padrao/assets/js/components/backToTop.js', 'template' => $this->getBackToTopJs()],
+                    ['caminho' => 'template_padrao/assets/js/components/docs.js', 'template' => $this->getDocsJs()],
+                    ['caminho' => 'template_padrao/assets/images/logo/ippls-logo-removebg-preview.png', 'template' => $this->getLogoPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/logo/composer.svg', 'template' => $this->getComposerPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/logo/php.svg', 'template' => $this->getPhpPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/logo/mysql.svg', 'template' => $this->getMySqlPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/logo/license.svg', 'template' => $this->getLicensePlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/apache.svg', 'template' => $this->getApachePlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/composer.svg', 'template' => $this->getComposerPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/css3.svg', 'template' => $this->getCss3Placeholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/git.svg', 'template' => $this->getGitPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/html5.svg', 'template' => $this->getHtml5Placeholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/javascript.svg', 'template' => $this->getJavascriptPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/mysql.svg', 'template' => $this->getMySqlPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/php.svg', 'template' => $this->getPhpPlaceholder()],
+                    ['caminho' => 'template_padrao/assets/images/skills/xampp.svg', 'template' => $this->getXamppPlaceholder()],
+                    ['caminho' => 'template_padrao/favicon.ico', 'template' => $this->getFaviconPlaceholder()],
+                    ['caminho' => 'template_padrao/README.md', 'template' => $this->getReadmePadrao()]
                 ],
 
                 'requisitos' => [
@@ -262,7 +262,7 @@ class TemplateArquiteturaSeeder extends Seeder
                 'descricao_completa' => 'O Template Avançado estende o Padrão com URLs amigáveis (sem ?page=), sistema de middleware para autenticação e CSRF, upload de arquivos, paginação de dados, API REST básica e múltiplos CRUDs. Mantém a simplicidade do MVC com recursos profissionais.',
 
                 'estrutura_diretorios' => [
-                    'projeto_avancado/' => [
+                    'template_avancado/' => [
                         'index.php',
                         'app/' => [
                             'config/' => ['app.php', 'database.php', 'constants.php', 'helpers.php'],
@@ -363,113 +363,113 @@ class TemplateArquiteturaSeeder extends Seeder
                     // ========================================
                     // INDEX.PHP - ROTEAMENTO MELHORADO
                     // ========================================
-                    ['caminho' => 'projeto_avancado/index.php', 'template' => $this->getIndexAvancado()],
-                    ['caminho' => 'projeto_avancado/.htaccess', 'template' => $this->getHtaccessAvancado()],
-                    ['caminho' => 'projeto_avancado/composer.json', 'template' => $this->getComposerJsonAvancado()],
+                    ['caminho' => 'template_avancado/index.php', 'template' => $this->getIndexAvancado()],
+                    ['caminho' => 'template_avancado/.htaccess', 'template' => $this->getHtaccessAvancado()],
+                    ['caminho' => 'template_avancado/composer.json', 'template' => $this->getComposerJsonAvancado()],
 
                     // ========================================
                     // CONFIGURAÇÕES
                     // ========================================
-                    ['caminho' => 'projeto_avancado/app/config/app.php', 'template' => $this->getAppConfigAvancado()],
-                    ['caminho' => 'projeto_avancado/app/config/database.php', 'template' => $this->getDatabaseConfigAvancado()],
-                    ['caminho' => 'projeto_avancado/app/config/constants.php', 'template' => $this->getConstantsConfigAvancado()],
-                    ['caminho' => 'projeto_avancado/app/config/helpers.php', 'template' => $this->getHelpersConfigAvancado()],
+                    ['caminho' => 'template_avancado/app/config/app.php', 'template' => $this->getAppConfigAvancado()],
+                    ['caminho' => 'template_avancado/app/config/database.php', 'template' => $this->getDatabaseConfigAvancado()],
+                    ['caminho' => 'template_avancado/app/config/constants.php', 'template' => $this->getConstantsConfigAvancado()],
+                    ['caminho' => 'template_avancado/app/config/helpers.php', 'template' => $this->getHelpersConfigAvancado()],
 
                     // ========================================
                     // ROTAS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/routes/web.php', 'template' => $this->getWebRoutesAvancado()],
-                    ['caminho' => 'projeto_avancado/routes/api.php', 'template' => $this->getApiRoutesAvancado()],
+                    ['caminho' => 'template_avancado/routes/web.php', 'template' => $this->getWebRoutesAvancado()],
+                    ['caminho' => 'template_avancado/routes/api.php', 'template' => $this->getApiRoutesAvancado()],
 
                     // ========================================
                     // MIDDLEWARE
                     // ========================================
-                    ['caminho' => 'projeto_avancado/app/Http/Middleware/AuthMiddleware.php', 'template' => $this->getAuthMiddleware()],
-                    ['caminho' => 'projeto_avancado/app/Http/Middleware/CsrfMiddleware.php', 'template' => $this->getCsrfMiddleware()],
+                    ['caminho' => 'template_avancado/app/Http/Middleware/AuthMiddleware.php', 'template' => $this->getAuthMiddleware()],
+                    ['caminho' => 'template_avancado/app/Http/Middleware/CsrfMiddleware.php', 'template' => $this->getCsrfMiddleware()],
 
                     // ========================================
                     // MODELS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/app/Models/User.php', 'template' => $this->getUserModelAvancado()],
-                    ['caminho' => 'projeto_avancado/app/Models/Product.php', 'template' => $this->getProductModel()],
+                    ['caminho' => 'template_avancado/app/Models/User.php', 'template' => $this->getUserModelAvancado()],
+                    ['caminho' => 'template_avancado/app/Models/Product.php', 'template' => $this->getProductModel()],
 
                     // ========================================
                     // CONTROLLERS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/app/Http/Controllers/HomeController.php', 'template' => $this->getHomeControllerAvancado()],
-                    ['caminho' => 'projeto_avancado/app/Http/Controllers/UserController.php', 'template' => $this->getUserControllerAvancado()],
-                    ['caminho' => 'projeto_avancado/app/Http/Controllers/AuthController.php', 'template' => $this->getAuthController()],
-                    ['caminho' => 'projeto_avancado/app/Http/Controllers/ProductController.php', 'template' => $this->getProductController()],
-                    ['caminho' => 'projeto_avancado/app/Http/Controllers/ApiController.php', 'template' => $this->getApiController()],
+                    ['caminho' => 'template_avancado/app/Http/Controllers/HomeController.php', 'template' => $this->getHomeControllerAvancado()],
+                    ['caminho' => 'template_avancado/app/Http/Controllers/UserController.php', 'template' => $this->getUserControllerAvancado()],
+                    ['caminho' => 'template_avancado/app/Http/Controllers/AuthController.php', 'template' => $this->getAuthController()],
+                    ['caminho' => 'template_avancado/app/Http/Controllers/ProductController.php', 'template' => $this->getProductController()],
+                    ['caminho' => 'template_avancado/app/Http/Controllers/ApiController.php', 'template' => $this->getApiController()],
 
                     // ========================================
                     // VIEWS - LAYOUTS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/views/layouts/main.php', 'template' => $this->getMainLayoutAvancado()],
-                    ['caminho' => 'projeto_avancado/views/layouts/dashboard.php', 'template' => $this->getDashboardLayout()],
+                    ['caminho' => 'template_avancado/views/layouts/main.php', 'template' => $this->getMainLayoutAvancado()],
+                    ['caminho' => 'template_avancado/views/layouts/dashboard.php', 'template' => $this->getDashboardLayout()],
 
                     // ========================================
                     // VIEWS - PAGES
                     // ========================================
-                    ['caminho' => 'projeto_avancado/views/pages/home.php', 'template' => $this->getHomeViewAvancado()],
-                    ['caminho' => 'projeto_avancado/views/pages/users.php', 'template' => $this->getUsersViewAvancado()],
-                    ['caminho' => 'projeto_avancado/views/pages/products.php', 'template' => $this->getProductsView()],
-                    ['caminho' => 'projeto_avancado/views/pages/docs.php', 'template' => $this->getDocsViewAvancado()],
-                    ['caminho' => 'projeto_avancado/views/pages/dashboard.php', 'template' => $this->getDashboardView()],
-                    ['caminho' => 'projeto_avancado/views/pages/auth/login.php', 'template' => $this->getLoginView()],
-                    ['caminho' => 'projeto_avancado/views/pages/auth/register.php', 'template' => $this->getRegisterView()],
+                    ['caminho' => 'template_avancado/views/pages/home.php', 'template' => $this->getHomeViewAvancado()],
+                    ['caminho' => 'template_avancado/views/pages/users.php', 'template' => $this->getUsersViewAvancado()],
+                    ['caminho' => 'template_avancado/views/pages/products.php', 'template' => $this->getProductsView()],
+                    ['caminho' => 'template_avancado/views/pages/docs.php', 'template' => $this->getDocsViewAvancado()],
+                    ['caminho' => 'template_avancado/views/pages/dashboard.php', 'template' => $this->getDashboardView()],
+                    ['caminho' => 'template_avancado/views/pages/auth/login.php', 'template' => $this->getLoginView()],
+                    ['caminho' => 'template_avancado/views/pages/auth/register.php', 'template' => $this->getRegisterView()],
 
                     // ========================================
                     // VIEWS - COMPONENTS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/views/components/navbar.php', 'template' => $this->getNavbarAvancado()],
-                    ['caminho' => 'projeto_avancado/views/components/footer.php', 'template' => $this->getFooterAvancado()],
-                    ['caminho' => 'projeto_avancado/views/components/breadcrumbs.php', 'template' => $this->getBreadcrumbs()],
-                    ['caminho' => 'projeto_avancado/views/components/pagination.php', 'template' => $this->getPaginationComponent()],
+                    ['caminho' => 'template_avancado/views/components/navbar.php', 'template' => $this->getNavbarAvancado()],
+                    ['caminho' => 'template_avancado/views/components/footer.php', 'template' => $this->getFooterAvancado()],
+                    ['caminho' => 'template_avancado/views/components/breadcrumbs.php', 'template' => $this->getBreadcrumbs()],
+                    ['caminho' => 'template_avancado/views/components/pagination.php', 'template' => $this->getPaginationComponent()],
 
                     // ========================================
                     // VIEWS - ERRORS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/views/errors/404.php', 'template' => $this->get404Avancado()],
-                    ['caminho' => 'projeto_avancado/views/errors/500.php', 'template' => $this->get500Avancado()],
+                    ['caminho' => 'template_avancado/views/errors/404.php', 'template' => $this->get404Avancado()],
+                    ['caminho' => 'template_avancado/views/errors/500.php', 'template' => $this->get500Avancado()],
 
                     // ========================================
                     // ASSETS - CSS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/public/assets/css/style.css', 'template' => $this->getStyleCssAvancado()],
-                    ['caminho' => 'projeto_avancado/public/assets/css/base.css', 'template' => $this->getBaseCssAvancado()],
-                    ['caminho' => 'projeto_avancado/public/assets/css/components/pagination.css', 'template' => $this->getPaginationCss()],
-                    ['caminho' => 'projeto_avancado/public/assets/css/components/breadcrumbs.css', 'template' => $this->getBreadcrumbsCss()],
-                    ['caminho' => 'projeto_avancado/public/assets/css/sections/dashboard.css', 'template' => $this->getDashboardCss()],
+                    ['caminho' => 'template_avancado/public/assets/css/style.css', 'template' => $this->getStyleCssAvancado()],
+                    ['caminho' => 'template_avancado/public/assets/css/base.css', 'template' => $this->getBaseCssAvancado()],
+                    ['caminho' => 'template_avancado/public/assets/css/components/pagination.css', 'template' => $this->getPaginationCss()],
+                    ['caminho' => 'template_avancado/public/assets/css/components/breadcrumbs.css', 'template' => $this->getBreadcrumbsCss()],
+                    ['caminho' => 'template_avancado/public/assets/css/sections/dashboard.css', 'template' => $this->getDashboardCss()],
 
                     // ========================================
                     // ASSETS - JS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/public/assets/js/main.js', 'template' => $this->getMainJsAvancado()],
-                    ['caminho' => 'projeto_avancado/public/assets/js/components/upload.js', 'template' => $this->getUploadJs()],
-                    ['caminho' => 'projeto_avancado/public/assets/js/components/api.js', 'template' => $this->getApiJs()],
+                    ['caminho' => 'template_avancado/public/assets/js/main.js', 'template' => $this->getMainJsAvancado()],
+                    ['caminho' => 'template_avancado/public/assets/js/components/upload.js', 'template' => $this->getUploadJs()],
+                    ['caminho' => 'template_avancado/public/assets/js/components/api.js', 'template' => $this->getApiJs()],
 
                     // ========================================
                     // STORAGE
                     // ========================================
-                    ['caminho' => 'projeto_avancado/storage/logs/app.log', 'template' => ''],
+                    ['caminho' => 'template_avancado/storage/logs/app.log', 'template' => ''],
 
                     // ========================================
                     // ASSETS BINÁRIOS
                     // ========================================
-                    ['caminho' => 'projeto_avancado/public/assets/images/logo/ippls-logo-removebg-preview.png', 'template' => $this->getLogoPlaceholder()],
-                    ['caminho' => 'projeto_avancado/favicon.ico', 'template' => $this->getFaviconPlaceholder()],
+                    ['caminho' => 'template_avancado/public/assets/images/logo/ippls-logo-removebg-preview.png', 'template' => $this->getLogoPlaceholder()],
+                    ['caminho' => 'template_avancado/favicon.ico', 'template' => $this->getFaviconPlaceholder()],
 
                     // FontAwesome
-                    ['caminho' => 'projeto_avancado/vendor/fontawesome/css/all.min.css', 'template' => $this->getAllMinCssFA()],
-                    ['caminho' => 'projeto_avancado/vendor/fontawesome/webfonts/fa-brands-400.woff2', 'template' => $this->getFaBrands400Woff2()],
-                    ['caminho' => 'projeto_avancado/vendor/fontawesome/webfonts/fa-regular-400.woff2', 'template' => $this->getFaRegular400Woff2()],
-                    ['caminho' => 'projeto_avancado/vendor/fontawesome/webfonts/fa-solid-900.woff2', 'template' => $this->getFaSolid400Woff2()],
+                    ['caminho' => 'template_avancado/vendor/fontawesome/css/all.min.css', 'template' => $this->getAllMinCssFA()],
+                    ['caminho' => 'template_avancado/vendor/fontawesome/webfonts/fa-brands-400.woff2', 'template' => $this->getFaBrands400Woff2()],
+                    ['caminho' => 'template_avancado/vendor/fontawesome/webfonts/fa-regular-400.woff2', 'template' => $this->getFaRegular400Woff2()],
+                    ['caminho' => 'template_avancado/vendor/fontawesome/webfonts/fa-solid-900.woff2', 'template' => $this->getFaSolid400Woff2()],
 
                     // ========================================
                     // README
                     // ========================================
-                    ['caminho' => 'projeto_avancado/README.md', 'template' => $this->getReadmeAvancado()]
+                    ['caminho' => 'template_avancado/README.md', 'template' => $this->getReadmeAvancado()]
                 ],
 
                 'requisitos' => [
@@ -578,7 +578,7 @@ PHP;
 // config/database.php - Configuração do banco de dados
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'meu_projeto_base');
+define('DB_NAME', 'meu_template_base');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
@@ -5757,9 +5757,9 @@ Coloque os arquivos na pasta do seu servidor web:
 
 ### 2. Criar Banco de Dados
 ```sql
-CREATE DATABASE meu_projeto_base CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE meu_template_base CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE meu_projeto_base;
+USE meu_template_base;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -5779,7 +5779,7 @@ INSERT INTO users (name, email) VALUES
 Edite `config/database.php`:
 ```php
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'meu_projeto_base');
+define('DB_NAME', 'meu_template_base');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 ```
@@ -5791,7 +5791,7 @@ http://localhost/meu-projeto
 
 ## 📁 Estrutura do Projeto
 ```
-projeto_base/
+template_base/
 ├── index.php                    # Ponto de entrada e roteamento centralizado
 ├── favicon.ico                  # Ícone do site
 ├── config/
@@ -6619,7 +6619,7 @@ JSON;
 # Habilitar RewriteEngine
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /projeto_padrao/
+    RewriteBase /template_padrao/
 
     # Permitir acesso direto a arquivos e diretórios existentes
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -6789,7 +6789,7 @@ class Database
     private function __construct()
     {
         $host = getenv('DB_HOST') ?: 'localhost';
-        $name = getenv('DB_NAME') ?: 'projeto_padrao';
+        $name = getenv('DB_NAME') ?: 'template_padrao';
         $user = getenv('DB_USER') ?: 'root';
         $pass = getenv('DB_PASS') ?: '';
 
@@ -6861,32 +6861,32 @@ PHP;
 // CAMINHOS BASE
 // ============================================
 
-define('BASE_PATH', dirname(__DIR__, 2));           // c:\xampp\htdocs\projeto_padrao
-define('APP_PATH', BASE_PATH . '/app');              // c:\xampp\htdocs\projeto_padrao\app
-define('VIEWS_PATH', BASE_PATH . '/views');          // c:\xampp\htdocs\projeto_padrao\views
-define('ASSETS_PATH', BASE_PATH . '/assets');        // c:\xampp\htdocs\projeto_padrao\assets
-define('CONFIG_PATH', APP_PATH . '/config');         // c:\xampp\htdocs\projeto_padrao\app\config
-define('CONTROLLERS_PATH', APP_PATH . '/Http/Controllers');  // c:\xampp\htdocs\projeto_padrao\app/Http/Controllers
-define('MODELS_PATH', APP_PATH . '/Models');         // c:\xampp\htdocs\projeto_padrao\app/Models
-define('ROUTES_PATH', BASE_PATH . '/routes');        // c:\xampp\htdocs\projeto_padrao\routes
-define('VENDOR_PATH', BASE_PATH . '/vendor');        // c:\xampp\htdocs\projeto_padrao\vendor
+define('BASE_PATH', dirname(__DIR__, 2));           // c:\xampp\htdocs\template_padrao
+define('APP_PATH', BASE_PATH . '/app');              // c:\xampp\htdocs\template_padrao\app
+define('VIEWS_PATH', BASE_PATH . '/views');          // c:\xampp\htdocs\template_padrao\views
+define('ASSETS_PATH', BASE_PATH . '/assets');        // c:\xampp\htdocs\template_padrao\assets
+define('CONFIG_PATH', APP_PATH . '/config');         // c:\xampp\htdocs\template_padrao\app\config
+define('CONTROLLERS_PATH', APP_PATH . '/Http/Controllers');  // c:\xampp\htdocs\template_padrao\app/Http/Controllers
+define('MODELS_PATH', APP_PATH . '/Models');         // c:\xampp\htdocs\template_padrao\app/Models
+define('ROUTES_PATH', BASE_PATH . '/routes');        // c:\xampp\htdocs\template_padrao\routes
+define('VENDOR_PATH', BASE_PATH . '/vendor');        // c:\xampp\htdocs\template_padrao\vendor
 
 // ============================================
 // CAMINHOS ESPECÍFICOS DE VIEWS
 // ============================================
 
-define('LAYOUTS_PATH', VIEWS_PATH . '/layouts');     // c:\xampp\htdocs\projeto_padrao\views\layouts
-define('PAGES_PATH', VIEWS_PATH . '/pages');         // c:\xampp\htdocs\projeto_padrao\views\pages
-define('COMPONENTS_PATH', VIEWS_PATH . '/components');  // c:\xampp\htdocs\projeto_padrao\views\components
-define('ERRORS_PATH', VIEWS_PATH . '/errors');       // c:\xampp\htdocs\projeto_padrao\views\errors
+define('LAYOUTS_PATH', VIEWS_PATH . '/layouts');     // c:\xampp\htdocs\template_padrao\views\layouts
+define('PAGES_PATH', VIEWS_PATH . '/pages');         // c:\xampp\htdocs\template_padrao\views\pages
+define('COMPONENTS_PATH', VIEWS_PATH . '/components');  // c:\xampp\htdocs\template_padrao\views\components
+define('ERRORS_PATH', VIEWS_PATH . '/errors');       // c:\xampp\htdocs\template_padrao\views\errors
 
 // ============================================
 // CAMINHOS DE ASSETS
 // ============================================
 
-define('CSS_PATH', ASSETS_PATH . '/css');            // c:\xampp\htdocs\projeto_padrao\assets\css
-define('JS_PATH', ASSETS_PATH . '/js');              // c:\xampp\htdocs\projeto_padrao\assets\js
-define('IMAGES_PATH', ASSETS_PATH . '/images');      // c:\xampp\htdocs\projeto_padrao\assets\images
+define('CSS_PATH', ASSETS_PATH . '/css');            // c:\xampp\htdocs\template_padrao\assets\css
+define('JS_PATH', ASSETS_PATH . '/js');              // c:\xampp\htdocs\template_padrao\assets\js
+define('IMAGES_PATH', ASSETS_PATH . '/images');      // c:\xampp\htdocs\template_padrao\assets\images
 
 // ============================================
 // AMBIENTE E DEBUG
@@ -8063,7 +8063,7 @@ Edite `app/config/database.php`:
 
 ```php
 $host = getenv('DB_HOST') ?: 'localhost';
-$name = getenv('DB_NAME') ?: 'projeto_padrao';
+$name = getenv('DB_NAME') ?: 'template_padrao';
 $user = getenv('DB_USER') ?: 'root';
 $pass = getenv('DB_PASS') ?: '';
 ```
@@ -9564,7 +9564,7 @@ composer install
 
 ### 2. Configurar Banco de Dados
 ```sql
-CREATE DATABASE projeto_avancado;
+CREATE DATABASE template_avancado;
 -- (mesmo schema do template padrão)
 ```
 
@@ -9576,7 +9576,7 @@ composer test
 ## 📁 Estrutura
 
 ```
-projeto_avancado/
+template_avancado/
 ├── app/
 │   ├── Http/
 │   │   └── Controllers/         # Controllers com DI
@@ -9805,7 +9805,7 @@ private function getHtaccessAvancado(): string
     RewriteEngine On
 
     # Definir base path (ajuste se necessário)
-    RewriteBase /projeto_avancado/
+    RewriteBase /template_avancado/
 
     # Redirecionar www para não-www (opcional)
     # RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
@@ -10216,7 +10216,7 @@ class Database
     private function __construct()
     {
         $host = getenv('DB_HOST') ?: 'localhost';
-        $name = getenv('DB_NAME') ?: 'projeto_avancado';
+        $name = getenv('DB_NAME') ?: 'template_avancado';
         $user = getenv('DB_USER') ?: 'root';
         $pass = getenv('DB_PASS') ?: '';
         $charset = 'utf8mb4';
@@ -12063,8 +12063,8 @@ composer install
 
 2. **Criar banco de dados:**
 ```sql
-CREATE DATABASE projeto_avancado;
-USE projeto_avancado;
+CREATE DATABASE template_avancado;
+USE template_avancado;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -12087,14 +12087,14 @@ CREATE TABLE products (
 ```php
 // app/config/database.php
 DB_HOST = 'localhost';
-DB_NAME = 'projeto_avancado';
+DB_NAME = 'template_avancado';
 DB_USER = 'root';
 DB_PASS = '';
 ```
 
 4. **Acessar:**
 ```
-http://localhost/projeto_avancado
+http://localhost/template_avancado
 ```
 
 ## 📚 URLs Disponíveis
